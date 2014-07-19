@@ -68,6 +68,10 @@ function getLocation() {
 function showPosition(position) {
     x.innerHTML = "Latitude: " + position.coords.latitude + 
     "<br>Longitude: " + position.coords.longitude; 
+    if (position.coords.heading != null)
+    {
+    	x.innerHTML += "Heading: " + position.coords.heading;
+    }
     map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 }
 
