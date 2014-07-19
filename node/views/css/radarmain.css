@@ -1,5 +1,14 @@
 //Radar index css file
-
-#RadarLogo{
-    width = 100%;
+*{
+    margin:0;
+    padding:0 auto;
+}
+#content{
+    margin:auto;
+    max-width:400px;
+    width:75%;
+}
+img{
+    margin:auto;
+    width:100%;
 }
