@@ -3,20 +3,55 @@
 <head>
   <title>Radar</title>
   <meta name="description" content="Group gaming tracking system">
+      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+   <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 60% }
+    </style>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAUeCEPWBuJBrgOC2tgbTCfeONThql9f5Q"></script>
+	    <script type="text/javascript">
+	    var map;
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 8
+        };
+        map = new google.maps.Map(document.getElementById("map-canvas"),{
+            zoom: 19,
+            center: new google.maps.LatLng(-34.397, 150.644),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+            streetViewControl: false,
+            panControl: false,
+            zoomControlOptions: {
+               position: google.maps.ControlPosition.LEFT_BOTTOM
+            }});
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
 </head>
-<body>
+<body >
+
 
   <p>Hello, dfkj <%= user %>!</p>
 
   <p id="demo">i don't think this works, bro</p>
 
+
+
+   <div id="map-canvas" style="width: 70%; height: 70%"></div>
+
+
+
   <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
-<script type = text/javascript>
+<script type = "text/javascript">
 var x = document.getElementById("demo");
 var id;
 var options = {
   enableHighAccuracy: true,
-  timeout: 3000,
+  timeout: 10000,
   maximumAge: 0
 };
 
@@ -33,6 +68,15 @@ function getLocation() {
 function showPosition(position) {
     x.innerHTML = "Latitude: " + position.coords.latitude + 
     "<br>Longitude: " + position.coords.longitude; 
+    if (position.coords.heading != null)
+    {
+    	x.innerHTML += "<br>Heading: " + position.coords.heading;
+    }
+    else
+    {
+    	x.innerHTML += "<br>No heading.";
+    }
+    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 }
 
 function showError(error) {
@@ -55,5 +99,7 @@ function showError(error) {
     }
 }
 </script>
+
+
 </body>
 </html>
