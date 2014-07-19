@@ -13,11 +13,19 @@
   <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
 <script type = text/javascript>
 var x = document.getElementById("demo");
+var id;
+var options = {
+  enableHighAccuracy: true,
+  timeout: 3000,
+  maximumAge: 0
+};
+
 getLocation();
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
+
+        id = navigator.geolocation.watchPosition(showPosition, showError, options);
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -40,6 +48,9 @@ function showError(error) {
             break;
         case error.UNKNOWN_ERROR:
             x.innerHTML = "An unknown error occurred."
+            break;
+        default:
+            x.innerHTML = "default."
             break;
     }
 }
