@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Radar</title>
+  <meta name="description" content="Group gaming tracking system">
+</head>
+<body>
+
+  <p>Hello, dfkj <%= user %>!</p>
+
+  <p id="demo">i don't think this works, bro</p>
+
+  <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
+<script>
+var x = document.getElementById("demo");
+getLocation();
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    x.innerHTML = "Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude; 
+}
+</script>
+</body>
+</html>
