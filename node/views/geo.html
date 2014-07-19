@@ -51,7 +51,7 @@ var x = document.getElementById("demo");
 var id;
 var options = {
   enableHighAccuracy: true,
-  timeout: 7000,
+  timeout: 10000,
   maximumAge: 0
 };
 
@@ -70,7 +70,11 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
     if (position.coords.heading != null)
     {
-    	x.innerHTML += "Heading: " + position.coords.heading;
+    	x.innerHTML += "<br>Heading: " + position.coords.heading;
+    }
+    else
+    {
+    	x.innerHTML += "<br>No heading.";
     }
     map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 }
