@@ -6,7 +6,7 @@ exports.home = function(req, res) {
 };
 
 exports.geo = function(req, res) {
-  res.render('geo.html', {uId: '1' });
+  res.render('geo.html', {uId: '1' , user: req.user});
 };
 
 exports.create = function(req, res) {
