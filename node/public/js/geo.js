@@ -1,6 +1,7 @@
 var map;
 var icons = ['green-dot', 'red-dot', 'grey-dot'];
 var markers = [];
+ var marker_map = {};
 var own_marker;
 var curr_timer = null;
 var infowindow;
@@ -12,12 +13,11 @@ function initialize() {
     };
 
     map = new google.maps.Map(document.getElementById("map-canvas"),{
-        zoom: 19,
+        zoom: 18,
         center: new google.maps.LatLng(-34.397, 150.644),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         mapTypeControl: false,
         streetViewControl: false,
-        panControl: false,
         zoomControlOptions: {
            position: google.maps.ControlPosition.LEFT_BOTTOM
         }
@@ -111,23 +111,44 @@ function getOtherLocations(gId) {
 }
 
 function getOtherLocationsHelper(gId) {
-    for (var i = 0; i < markers.length; i++) {
-	   markers[i].setMap(null);
-    }
-    markers = [];
+   // for (var i = 0; i < markers.length; i++) {
+	//   markers[i].setMap(null);
+    //}
+    //markers = [];
+     var marked = {};
     $.post('/getcoloredsubgroups', {gId: 1}, function(data) {
         for (var i = 0; i < data.rows.length; i++) {
 	    var obj = data.rows[i];
 	    var icon = 'http://54.186.80.240/img/' + icons[1] + '.png';
 	    for (var j = 0; j < obj.length; j++) {
             if (obj[j].uId != uId && obj[j].Latitude && obj[j].Longitude){
-             var marker = new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map,
+                if (marker_map[obj[j].uId])
+                {
+                    console.log(JSON.stringify(marker_map));
+                    console.log(obj[j].uId);
+                    markers[marker_map[obj[j].uId]].setPosition(new google.maps.LatLng( obj[j].Latitude, obj[j].Longitude));
+                }
+                else
+                {
+               var marker = new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map,
                                title: obj[j].Username });
-              makeInfoWindowEvent(map, infowindow, '<b>' +  obj[j].Username + '</b>', marker);
+               makeInfoWindowEvent(map, infowindow, '<b>' +  obj[j].Username + '</b>', marker);
+               marker_map[obj[j].uId] = markers.length;
 	           markers.push(marker);
+               }
+               marked[marker_map[obj[j].uId]] = true;
            }
 	    }
+        
 	}
+    for (var uIdCounter in marker_map)
+    {
+        if (!marked[marker_map[uIdCounter]])
+        {
+            markers[marker_map[uIdCounter]].setMap(null);
+            delete marker_map[uIdCounter];
+        }
+    }
     });
 
 }
