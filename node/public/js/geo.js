@@ -3,12 +3,14 @@ var icons = ['green-dot', 'red-dot', 'grey-dot'];
 var markers = [];
 var own_marker;
 var curr_timer = null;
+var infowindow;
 
 function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(-34.397, 150.644),
         zoom: 8
     };
+
     map = new google.maps.Map(document.getElementById("map-canvas"),{
         zoom: 19,
         center: new google.maps.LatLng(-34.397, 150.644),
@@ -16,14 +18,24 @@ function initialize() {
         mapTypeControl: false,
         streetViewControl: false,
         panControl: false,
-        rotateControl: true,
         zoomControlOptions: {
            position: google.maps.ControlPosition.LEFT_BOTTOM
         }
     });
+    infowindow = new google.maps.InfoWindow();
+
     var icon = 'http://54.186.80.240/img/' + icons[0] + '.png';
-    own_marker = new google.maps.Marker({position: {lat: -34.397, lng: 150.644}, icon: icon, map: map});
+    own_marker = new google.maps.Marker({position: {lat: -34.397, lng: 150.644}, icon: icon, map: map, title: 'Me'});
+    makeInfoWindowEvent(map, infowindow, '<b>Me</b>', own_marker);
+    
  }
+ /* from http://jsfiddle.net/yV6xv/163/ */
+ function makeInfoWindowEvent(map, infowindow, contentString, marker) {
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(contentString);
+    infowindow.open(map, marker);
+  });
+}
 google.maps.event.addDomListener(window, 'load', initialize);
 
 var x;
@@ -108,8 +120,12 @@ function getOtherLocationsHelper(gId) {
 	    var obj = data.rows[i];
 	    var icon = 'http://54.186.80.240/img/' + icons[1] + '.png';
 	    for (var j = 0; j < obj.length; j++) {
-            if (obj[j].uId != uId && obj[j].Latitude && obj[j].Longitude)
-	           markers.push(new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map}));
+            if (obj[j].uId != uId && obj[j].Latitude && obj[j].Longitude){
+             var marker = new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map,
+                               title: obj[j].Username });
+              makeInfoWindowEvent(map, infowindow, '<b>' +  obj[j].Username + '</b>', marker);
+	           markers.push(marker);
+           }
 	    }
 	}
     });

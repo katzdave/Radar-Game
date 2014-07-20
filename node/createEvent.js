@@ -61,7 +61,10 @@ exports.joinEvent = function(req, res){
         if(err){
             console.log(err);
         }
-        uid = rows[0].uId;
+        if (rows[0] == null)
+        	uid = null;
+        else
+            uid = rows[0].uId;
         if (uid == null){//need to add this user
             sql.registerUser(function(err){sql.getUserFromFbid(getUid, fbid);}, fbid, req.user.facebook.name);
             function getUid(err, rows){
