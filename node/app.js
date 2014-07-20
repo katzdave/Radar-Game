@@ -2,6 +2,22 @@ var express = require('express');
 var http = require('http');
 var routes = require('./routes');
 
+var passport = require('passport')
+  , FacebookStrategy = require('passport-facebook').Strategy;
+
+passport.use(new FacebookStrategy({
+    clientID: 1476041929304242,
+    clientSecret: "56fee07fc45d24c2662538660693aef8",
+    callbackURL: "http://localhost:8080/create"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate(profile, function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+  }
+));
+
 var app = express();
 
 // all environments
@@ -28,7 +44,8 @@ if ('development' == app.get('env')) {
 app.get('/', routes.home);
 app.get('/geo', routes.geo);
 app.get('/create', routes.create);
-app.get('/facebook', routes.facebook);
+app.get('/auth/facebook', passport.authenticate('facebook'));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
