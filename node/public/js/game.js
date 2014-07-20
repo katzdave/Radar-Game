@@ -3,8 +3,11 @@ google.load('visualization', '1', {packages:['orgchart']});
 google.setOnLoadCallback(drawChart);
 var groupusers;
 var subgroups;
+var chart = undefined;
 
-function listusers(gId) {
+function listusers() {
+    var gId = (!chart || chart.getSelection().length === 0) ?
+    	this_gId : subgroups[chart.getSelection()[0].row].gId;
     $.post('/listgroupusers', {gId: gId}, function(data) {
 	groupusers = data.result;
 	var html = '';
@@ -38,11 +41,14 @@ function drawChart() {
         chart = new google.visualization.OrgChart(document.getElementById('groups'));
         chart.draw(data, {allowHtml: true, nodeClass: 'treenode', selectedNodeClass: 'treenode_select'});
         google.visualization.events.addListener(chart, 'select', function(data) {
-	  var selection = chart.getSelection();
-	  var gId = selection.length === 0 ? this_gId : subgroups[selection[0].row].gId;
-	  listusers(gId);
+	  listusers();
         });
-	for (var i = 0; i < res.result.length; i++) {
+	updateGroupDetails();
+    });
+}
+
+function updateGroupDetails() {
+	for (var i = 0; i < subgroups.length; i++) {
 	  function listgroupuserswrapper(index) {
 	    $.post('/listgroupusers', {gId: subgroups[i].gId}, function(res) {
 	      var html = res.result.length + ' members';
@@ -51,12 +57,12 @@ function drawChart() {
 	  };
 	  listgroupuserswrapper(i);
 	}
-    });
 }
 
 function addusertogroup(uId, gId) {
     $.post('/addusertogroup', {uId: uId, gId: gId}, function(res) {
-	listusers(this_gId);
+	listusers();
+	updateGroupDetails();
     });
 }
 
@@ -74,5 +80,5 @@ function allowDrop(event) {
 }
 
 $(document).ready(function() {
-  listusers(this_gId);
+  listusers();
 });
