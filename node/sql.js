@@ -148,9 +148,9 @@ exports.addUserToGroup = function(callback, uId, gId, isAdmin){
 
 	function callRemoveUserHelper(err, group) {
 		if(err == null){
-			removeUserFromRoot(console.log, uId, group[0].rId);
+			removeUserFromRoot(callback, uId, group[0].rId);
 		}else{
-			console.log(err);
+			callback(err);
 		}
 	}
 	getGroup(callRemoveUserHelper, gId);

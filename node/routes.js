@@ -58,6 +58,6 @@ exports.listsubgroups = function(req, res) {
 exports.addusertogroup = function(req, res) {
   sql.addUserToGroup(function(err) {
     res.json({});
-  }, req.body.uId, req.body.gId);
+  }, req.body.uId, req.body.gId, 0);
 }
 
