@@ -7,8 +7,7 @@ var model = require('./model');
 // 	});
 // }
 
-// Returns complete user metadata
-exports.getUsersFromGroup = function(callback, gId){
+function getUsersFromGroup(callback, gId) {
 	query = 'SELECT u.uId, u.Username, u.fbId, u.Latitude, u.Longitude, u.Accuracy, u.LastUpdate '
 		+ 'FROM Users u '
 		+ 'INNER JOIN User_In_Group ug '
@@ -18,6 +17,7 @@ exports.getUsersFromGroup = function(callback, gId){
 			callback(err, rows);
 	});
 }
+exports.getUsersFromGroup = getUsersFromGroup;
 
 // Returns complete group metadata
 function getGroup(callback, gId){
@@ -60,11 +60,12 @@ function getGroupTreeHelper(callback, current, ans) {
 		getGroupTreeHelper(callback, current, ans);
 	}, gid);
 }
-exports.getGroupTree = function(callback, gId) {
+function getGroupTree(callback, gId) {
 	getGroup(function(err, group) {
 		getGroupTreeHelper(callback, [gId], group);
 	}, gId);
 }
+exports.getGroupTree = getGroupTree;
 
 //Returns root groups for a user
 exports.getRootGroups = function(callback, uId){
@@ -212,5 +213,21 @@ exports.addUserToGroup = function(callback, uId, gId, isAdmin){
 		}
 	}
 	getGroup(callRemoveUserHelper, gId);
+}
+
+// Returns complete user metadata
+exports.getUsersInSubgroups = function(callback, gId) {
+	getGroupTree(function(err, groups) {
+		var count = groups.length;
+		var allUsers = [];
+		for (var i = 0; i < groups.length; i++) {
+			getUsersFromGroup(function(err, users) {
+				allUsers = allUsers.concat(users);
+				if (--count === 0) {
+					callback(false, allUsers);
+				}
+			}, groups[i].gId);
+		}
+	}, gId);
 }
 
