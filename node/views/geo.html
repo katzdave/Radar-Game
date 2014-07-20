@@ -63,7 +63,11 @@
   		activeGame = gId;
 
       activeGroup = false;
-      	
+      clearInterval(curr_timer);
+         for (var i = 0; i < markers.length; i++) {
+           markers[i].setMap(null);
+         }
+
        $.post('/getSubGroups',{uId:uId, gId:activeGame},function(response) {
              console.log(response.err);
              console.log(response.rows);

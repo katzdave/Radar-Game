@@ -2,6 +2,7 @@ var map;
 var icons = ['green-dot', 'red-dot', 'grey-dot'];
 var markers = [];
 var own_marker;
+var curr_timer = null;
 
 function initialize() {
     var mapOptions = {
@@ -88,6 +89,16 @@ function getSubgroups() {
 }
 
 function getOtherLocations(gId) {
+    if (curr_timer)
+    {
+        clearInterval(curr_timer);
+    }
+    curr_timer = setInterval("getOtherLocationsHelper(activeGroup)", 1000);
+
+    getOtherLocationsHelper(gId);
+}
+
+function getOtherLocationsHelper(gId) {
     for (var i = 0; i < markers.length; i++) {
 	   markers[i].setMap(null);
     }
@@ -97,11 +108,12 @@ function getOtherLocations(gId) {
 	    var obj = data.rows[i];
 	    var icon = 'http://54.186.80.240/img/' + icons[1] + '.png';
 	    for (var j = 0; j < obj.length; j++) {
-            if (obj[j].uId != uId)
+            if (obj[j].uId != uId && obj[j].Latitude && obj[j].Longitude)
 	           markers.push(new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map}));
 	    }
 	}
     });
+
 }
 
 $(document).ready(function() {

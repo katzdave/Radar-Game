@@ -16,20 +16,20 @@ create table Users
 	CONSTRAINT pk_uId PRIMARY KEY (uId)
 );
 
-insert into Users (Username, fbId)
-	values ('Captain America', '34398498398492');
+insert into Users (Username, fbId, Latitude, Longitude)
+	values ('Captain America', '34398498398492','37.7862904','-122.40535219999998');
 
-insert into Users (Username, fbId)
-	values ('Captain Falcon', '39394823948923');
+insert into Users (Username, fbId, Latitude, Longitude)
+	values ('Captain Falcon', '39394823948923','37.7860904','-122.40535419999998');
 
-insert into Users (Username, fbId)
-	values ('Captain Crunch', '39940394093094');
+insert into Users (Username, fbId, Latitude, Longitude)
+	values ('Captain Crunch', '39940394093094','37.7862904','-122.40535419999998');
 
-insert into Users (Username, fbId)
-	values ('Captain Obvious', '4523423423423423');
+insert into Users (Username, fbId, Latitude, Longitude)
+	values ('Captain Obvious', '4523423423423423','37.7860904','-122.40535219999998');
 
-insert into Users (Username, fbId)
-	values ('Captain Hook', '3994039434');
+insert into Users (Username, fbId, Latitude, Longitude)
+	values ('Captain Hook', '3994039434', '37.7861904','-122.40535319999998');
 
 create table Groups
 (
@@ -87,6 +87,27 @@ insert into User_In_Group (gId, uId, isAdmin)
 insert into User_In_Group (gId, uId, isAdmin)
 	values (3,5,0);
 
+/* for demo, add users into group */
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,6,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,7,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,8,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,9,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,10,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,11,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (1,12,0);
 create table Rules
 (
 	rId int NOT NULL AUTO_INCREMENT,
