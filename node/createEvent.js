@@ -9,10 +9,10 @@ exports.createNewEvent = function(req, res){
   //should have a session and profile object.
   else{
     //generate new game: for now just load up current game
-    var fbid;
+    var fbid = req.user.facebook.id;
     var uid;
     var gid;
-    sql.getUserFromFbid(getUid, req.user.facebook.id);
+    sql.getUserFromFbid(getUid, fbid);
     function getUid(err, rows){
         //take the rows and grab
         if(err){
@@ -20,14 +20,18 @@ exports.createNewEvent = function(req, res){
         }
         uid = rows[0];
     }
-    sql.getGroupsFromUid(getGid, uid);
-    function getGid(err, rows){
-        if(err){
-            console.log(err);
+    if (uid == null){//need to add this user
+        sql.registerUser(function(err){}, fbid, req.user.facebook.name);
+    } else{
+        sql.getGroupsFromUid(getGid, uid);
+        function getGid(err, rows){
+            if(err){
+                console.log(err);
+            }
+            gid = rows[0];
         }
-        gid = rows[0];
     }
-    res.redirect('/game/'+gid);
+    res.redirect('/game/'+ 1);
   }
 };
 
