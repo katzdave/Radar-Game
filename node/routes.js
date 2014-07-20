@@ -15,3 +15,7 @@ exports.create = function(req, res) {
 exports.facebook = function(req, res) {
   res.render('facebook.html');
 };
+
+exports.game = function(req, res) {
+  res.render('game.html');
+};
