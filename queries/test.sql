@@ -17,10 +17,19 @@ create table Users
 );
 
 insert into Users (Username, fbId)
-	values ('Phillipe', 'sadfasdfd');
+	values ('Captain America', '34398498398492');
 
 insert into Users (Username, fbId)
-	values ('Ante', 'lolfuckyou');
+	values ('Captain Falcon', '39394823948923');
+
+insert into Users (Username, fbId)
+	values ('Captain Crunch', '39940394093094');
+
+insert into Users (Username, fbId)
+	values ('Captain Obvious', '4523423423423423');
+
+insert into Users (Username, fbId)
+	values ('Captain Hook', '39940394093094');
 
 create table Groups
 (
@@ -65,6 +74,18 @@ insert into User_In_Group (gId, uId, isAdmin)
 
 insert into User_In_Group (gId, uId, isAdmin)
 	values (3,1,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (3,2,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (3,3,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (3,4,0);
+
+insert into User_In_Group (gId, uId, isAdmin)
+	values (3,5,0);
 
 create table Rules
 (
