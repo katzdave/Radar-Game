@@ -5,6 +5,14 @@ var routes = require('./routes');
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
 
+passport.serializeUser(function(user, done){
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done){
+    done(null, obj);
+});
+
 passport.use(new FacebookStrategy({
     clientID: 1476041929304242,
     clientSecret: "56fee07fc45d24c2662538660693aef8",
@@ -45,7 +53,7 @@ app.get('/geo', routes.geo);
 app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/create' }));
 app.get('/game', routes.game);
 
 http.createServer(app).listen(app.get('port'), function() {
