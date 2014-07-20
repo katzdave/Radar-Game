@@ -4,7 +4,7 @@ google.setOnLoadCallback(drawChart);
 var groupusers;
 var subgroups;
 
-function listusers() {
+function listusers(gId) {
     $.post('/listgroupusers', {gId: gId}, function(data) {
 	groupusers = data.result;
 	var html = '';
@@ -18,14 +18,14 @@ function listusers() {
 }
 
 function drawChart() {
-    $.post('/listsubgroups', {gId: gId}, function(res) {
+    $.post('/listsubgroups', {gId: this_gId}, function(res) {
         subgroups = res.result;
-        data = new google.visualization.DataTable();
+        var data = new google.visualization.DataTable();
         data.addColumn('string', 'Node');
         data.addColumn('string', 'Parent');
 	var rows = [];
         for (var i = 0; i < res.result.length; i++) {
-	    var html = '<li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">';
+	    var html = '<li class="grou" ondrop="drop(event, ' + i + ')" ondragover="allowDrop(event)">';
 	    html += '<div>' + res.result[i].Groupname + '</div>';
 	    html += '<img src="' + res.result[i].ImageUrl + '" />';
 	    html += '</li>';
@@ -37,23 +37,26 @@ function drawChart() {
         chart = new google.visualization.OrgChart(document.getElementById('groups'));
         chart.draw(data, {allowHtml: true, nodeClass: 'treenode', selectedNodeClass: 'treenode_select'});
         google.visualization.events.addListener(chart, 'select', function(data) {
-          // code
+	  var selection = chart.getSelection();
+	  var gId = selection.length === 0 ? this_gId : subgroups[selection[0].row].gId;
+	  listusers(gId);
         });
     });
 }
 
-function addusertogroup(user, group) {
-	console.log(user);
-	console.log(group);
+function addusertogroup(uId, gId) {
+    $.post('/addusertogroup', {uId: uId, gId: gId}, function(res) {
+	listusers(this_gId);
+    });
 }
 
 function drag(event, userIndex) {
-    event.dataTransfer.setData('user', groupusers[userIndex]);
+    event.dataTransfer.setData('user', groupusers[userIndex].uId);
 }
 
 function drop(event, groupIndex) {
     event.preventDefault();
-    addusertogroup(event.dataTransfer.getData('user'), subgroups[groupIndex]);
+    addusertogroup(event.dataTransfer.getData('user'), subgroups[groupIndex].gId);
 }
 
 function allowDrop(event) {
@@ -61,5 +64,5 @@ function allowDrop(event) {
 }
 
 $(document).ready(function() {
-  listusers();
+  listusers(this_gId);
 });

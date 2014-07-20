@@ -59,6 +59,7 @@ app.get('/game/:gId', routes.game);
 
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);
+app.post('/addusertogroup', routes.addusertogroup);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
