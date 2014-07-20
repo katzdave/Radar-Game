@@ -159,6 +159,13 @@ exports.getUserFromFbid = function(callback, fbId){
 	});
 }
 
+exports.getGroupsFromUid = function(uId, callback){
+    query = 'SELECT * from User_In_Group WHERE uId = ?';
+    model.execute(query, uId, function(err, rows){
+        callback(err, rows);
+    });
+}
+
 /* This function attempts to insert a user into the database.
  * Will fail if they ar already present */
 /* Callback format: callback(err); */
@@ -182,20 +189,26 @@ exports.setPosition = function(callback, uId, lat, lng, acc){
 	});
 }
 
-function removeUserFromRoot(callback, uId, rId){
-	query = 'DELETE FROM User_In_Group ug'
-		+ 'INNER JOIN Group g '
-		+ 'ON g.gId = ug.gId '
-		+ 'WHERE ug.uId = ? AND g.rId = ?';
-	model.execute(query,[uId, rId], function(err, rows){
-		callback(err);
-	});
-}
+exports.addUserToGroup = function(callback, uId, gId, isAdmin){
+	function removeUserFromRoot(callback, uId, rId){
+		query = 'DELETE ug FROM User_In_Group ug '
+			+ 'INNER JOIN Groups g '
+			+ 'ON g.gId = ug.gId '
+			+ 'WHERE ug.uId = ? AND g.rId = ?';
+		model.execute(query,[uId, rId], function(err, rows){
+			query = 'INSERT into User_In_Group (gId, uId, isAdmin) '
+				+ 'VALUES (?,?,?)';
+			model.execute(query,[gId, uId, isAdmin], function(err, rows){
+				callback(err);
+			});
+		});
+	}
 
-exports.addUserToGroup = function(callback, uId, gId){
 	function callRemoveUserHelper(err, group) {
 		if(err == null){
-			removeUserFromRoot(callback, uId, gId);
+			removeUserFromRoot(callback, uId, group[0].rId);
+		}else{
+			callback(err);
 		}
 	}
 	getGroup(callRemoveUserHelper, gId);

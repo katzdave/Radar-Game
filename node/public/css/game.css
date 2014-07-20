@@ -32,7 +32,6 @@ table {
 
 .info {
     position: absolute;
-    display: none;
     background-color: #000000;
     border: 1px solid;
     border-color: #555555;
@@ -211,3 +210,4 @@ table {
 .treenode_select {
     background-color: #666666;
 }
+

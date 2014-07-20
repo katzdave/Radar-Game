@@ -2,6 +2,7 @@ var createEvent = require('./createEvent');
 var sql = require('./sql');
 
 exports.home = function(req, res) {
+  console.log(req.user);  // FTW!
   res.render('index.html', {user: 'Alpha'});
 };
 
@@ -57,6 +58,6 @@ exports.listsubgroups = function(req, res) {
 exports.addusertogroup = function(req, res) {
   sql.addUserToGroup(function(err) {
     res.json({});
-  }, req.body.uId, req.body.gId);
+  }, req.body.uId, req.body.gId, 0);
 }
 
