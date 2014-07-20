@@ -112,7 +112,7 @@ exports.getSubgroupsFromUser = function(callback, uId, gId){
 		+ 'ON g.gId = ug.gId '
 		+ 'WHERE ug.uId = ? AND g.rId = ?;';
 	model.execute(query,[uId, gId], function(err, rows){
-        if (err)
+        if (err || rows.length == 0)
         {
 			callback(err, rows);
 		}
@@ -130,9 +130,17 @@ function expandSubgroupTable(final_callback, table, errr, gId) {
 	 }
       console.log(JSON.stringify(table));
       getGroup(function(err, rows){
+      	if (err)
+      	{
+      		console.log(JSON.stringify(err));
+      		final_callback(err, table.reverse());
+      	}
+      	else
+      	{
       	      console.log(JSON.stringify(rows));
       	  table.push( rows[0]);
           expandSubgroupTable(final_callback, table, err, rows[0].pId);
+         }
       }, gId);
 
 }
@@ -216,7 +224,7 @@ exports.addUserToGroup = function(callback, uId, gId, isAdmin){
 }
 
 // Returns complete user metadata
-exports.getUsersInSubgroups = function(callback, gId) {
+function getUsersInSubgroups(callback, gId) {
 	getGroupTree(function(err, groups) {
 		var count = groups.length;
 		var allUsers = [];
@@ -254,4 +262,19 @@ exports.createSubGroup = function(callback, pId, Groupname, isPublic, isVisible,
 	model.execute(query, [pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId], function(err, rows){
 		console.log(err);
 	});
+}
+
+exports.getColoredUsersInSubgroups = function(callback, gId) {
+	getSubgroupsFromGroup(function(err, groups) {
+		var obj = [];
+		var count = groups.length;
+		for (var i = 0; i < groups.length; i++) {
+			getUsersInSubgroups(function(err, users) {
+				obj.push(users);
+				if (--count === 0) {
+					callback(false, obj);
+				}
+			}, groups[i].gId);
+		}
+	}, gId);
 }
