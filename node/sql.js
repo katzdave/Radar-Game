@@ -12,7 +12,7 @@ exports.getRules = function(callback){
 
 // Returns complete user metadata
 exports.getUsersFromGroup = function(callback, gId){
-	query = 'SELECT u.uId, u.Username, u.Phone, u.Latitude, u.Longitude, u.Accuracy, u.LastUpdate '
+	query = 'SELECT u.uId, u.Username, u.fbId, u.Latitude, u.Longitude, u.Accuracy, u.LastUpdate '
 		+ 'FROM Users u '
 		+ 'INNER JOIN User_In_Group ug '
 		+ 'ON u.uId = ug.uId '
@@ -41,19 +41,31 @@ exports.getGroupTree = function(callback, gId) {
 }
 
 /* This function checks the database to see if there already is a user associated with this
- * facebook ID. If so, return the user ID. If not, create this user as a new entry, generate
- * an User ID for this user, and return the new user ID. */
-/* Callback format: callback(err, uId); */
-exports.getUidFromFbid = function(callback, fbId){
-
+ * facebook ID. If so, return the user. Else return an error */
+/* Callback format: callback(err, user); */
+exports.getUserFromFbid = function(callback, fbId){
+	query = 'SELECT * from Users WHERE fbId = ?';
+	model.execute(query, fbId, function(err, rows){
+		callback(err, rows);
+	});
 }
 
+/* This function attempts to insert a user into the database.
+ * Will fail if they ar already present */
+/* Callback format: callback(err); */
+exports.registerUser = function(callback, fbId, username){
+	query = 'INSERT into Users (fbId, Username) '
+		+ 'VALUES (?,?)';
+	model.execute(query,[fbId, username], function(err, rows){
+		callback(err);
+	});
+}
 
 /* Set functions */
 
 /* This function updates the lattitude and longitude coordinates of the user with user ID uId. */
 /* Callback format: callback(err); */
-exports.setPosition = function(callback, uId, lat, lng){
+exports.setPosition = function(callback, uId, lat, lng, acc){
 
 }
 

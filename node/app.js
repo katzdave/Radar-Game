@@ -46,6 +46,8 @@ app.get('/geo', routes.geo);
 app.get('/create', routes.create);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
+app.get('/game', routes.game);
+>>>>>>> f23be0174afe931a931fb4aba2008f27f3177307
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
