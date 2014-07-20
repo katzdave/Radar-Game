@@ -6,4 +6,5 @@ var sql = require('./sql');
 // sql.registerUser(console.log,'1231231231','DavidKatz');
 // sql.setPosition(console.log,1, 324, 3434, 34343);
 
-sql.getRootGroups(console.log,1);
+//sql.getRootGroups(console.log,1);
+sql.getAllGroups(console.log,1);

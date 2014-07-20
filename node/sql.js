@@ -75,23 +75,18 @@ exports.getRootGroups = function(callback, uId){
 	});
 }
 
-// //Returns tiered groups for a user
-// //Inputs uId, gId of root
-// exports.getTieredGroups = function(callback, uId, gId){
-// 	query = 'SELECT * '
-// 		+ 'FROM Groups g '
-// 		+ 'INNER JOIN User_In_Group ug '
-// 		+ 'ON g.gId = ug.gId '
-// 		+ 'WHERE ug.uId = ? AND g.gId = ?;';
-// 	grouplist = [];
-// 	while(1) {
-//     	model.execute(query, gId, function(err, rows){
-// 			if(rows == null)
-// 				break;
-// 		});
-// 	}
-// 	while (condition);
-// }
+//Returns all groups for a user
+//Inputs uId
+exports.getAllGroups = function(callback, uId){
+	query = 'SELECT * '
+		+ 'FROM Groups g '
+		+ 'INNER JOIN User_In_Group ug '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ?';
+	model.execute(query, uId, function(err, rows){
+		callback(err, rows);
+	});
+}
 
 /* This function checks the database to see if there already is a user associated with this
  * facebook ID. If so, return the user. Else return an error */
