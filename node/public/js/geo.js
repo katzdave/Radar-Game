@@ -1,6 +1,7 @@
 var map;
 var icons = ['green-dot', 'red-dot', 'grey-dot'];
 var markers = [];
+var own_marker;
 
 function initialize() {
     var mapOptions = {
@@ -19,13 +20,15 @@ function initialize() {
            position: google.maps.ControlPosition.LEFT_BOTTOM
         }
     });
+    var icon = 'http://54.186.80.240/img/' + icons[0] + '.png';
+    own_marker = new google.maps.Marker({position: {lat: -34.397, lng: 150.644}, icon: icon, map: map});
  }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 var x;
 var options = {
   enableHighAccuracy: true,
-  timeout: 10000,
+  timeout: 30000,
   maximumAge: 0
 };
 
@@ -43,6 +46,7 @@ function showPosition(position) {
 	lat: position.coords.latitude,
 	lng: position.coords.longitude
     });
+    own_marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 }
 
 function showError(error) {
