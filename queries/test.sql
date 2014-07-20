@@ -7,7 +7,7 @@ drop table Rules;
 create table Users
 (
 	uId int NOT NULL AUTO_INCREMENT,
-	fbId varchar(32) NOT NULL,
+	fbId varchar(32) NOT NULL UNIQUE,
 	Username varchar(32) NOT NULL,
 	Latitude double,
 	Longitude double,
@@ -16,10 +16,10 @@ create table Users
 	CONSTRAINT pk_uId PRIMARY KEY (uId)
 );
 
-insert into Users (Username, Phone)
+insert into Users (Username, fbId)
 	values ('Phillip', '1234567890');
 
-insert into Users (Username, Phone)
+insert into Users (Username, fbId)
 	values ('Ante', 'lolfuckyou');
 
 create table Groups
@@ -34,10 +34,10 @@ create table Groups
 );
 
 insert into Groups (Groupname, isPublic)
-	values ('humans vs zombies',1);
+	values ('humans vs zombies', 1);
 
 insert into Groups (pId, Groupname, isPublic)
-	values (1, 'humans',0);
+	values (1, 'humans', 0);
 
 insert into Groups (pId, Groupname, isPublic)
 	values (1, 'zombies',0);
@@ -59,9 +59,3 @@ create table Rules
 	Filename varchar(64) NOT NULL,
 	CONSTRAINT pk_rId PRIMARY KEY (rId)
 );
-
-SELECT u.uId, u.Username, u.Phone, u.Latitude, u.Longitude, u.Accuracy, u.LastUpdate
-FROM Users u
-INNER JOIN User_In_Group ug
-ON u.uId = ug.uId
-WHERE ug.gId = 1; 
