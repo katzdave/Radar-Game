@@ -48,10 +48,15 @@
         });
       function selectGame(gId)
       {
-      	if (activeGame != false)
+      	if (activeGame == gId)
+      		return;
+      	if (activeGame != false && document.getElementById("game" + activeGame))
       	      document.getElementById("game" + activeGame).className = "blue button geobutton";
-      	document.getElementById("game" + gId).className = "selected button geobutton";
-      	activeGame = gId;
+
+
+      	document.getElementById("usersulgroup").innerHTML = "";
+  		document.getElementById("game" + gId).className = "selected button geobutton";
+  		activeGame = gId;
 
 
       	
@@ -69,9 +74,9 @@
                 for(var row in rows){
                 	// add if disabled/root, don't allow click.
                 	var groupstr = '<div id="group' + rows[row].gId + '" class="blue button geobutton"';
+                	if (rows[row].isVisible == 0) groupstr += ' disabled="true"'
                 	groupstr += ' onclick="selectGroup(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
                     groupdiv.innerHTML += groupstr;
-
             	}
              }
              else
@@ -83,11 +88,13 @@
 
       function selectGroup(gId)
       {
-      	if (activeGroup != false)
+      	if (activeGroup == gId)
+      		return;
+      	if (activeGroup != false && document.getElementById("group" + activeGroup))
       		document.getElementById("group" + activeGroup).className = "blue button geobutton";
       	document.getElementById("group" + gId).className = "selected button geobutton";
       	activeGroup = gId;
-      	
+
       }
 
       function initialize() {
