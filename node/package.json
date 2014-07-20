@@ -10,6 +10,7 @@
     "ejs": "*",
     "mysql2": "*",
     "passport": "*",
-    "passport-facebook": "*"
+    "passport-facebook": "*",
+    "everyauth": "*"
   }
 }
