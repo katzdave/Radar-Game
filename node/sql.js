@@ -20,7 +20,7 @@ exports.getUsersFromGroup = function(callback, gId){
 }
 
 // Returns complete group metadata
-exports.getGroup = function(callback, gId){
+function getGroup(callback, gId){
 		query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'WHERE g.gId = ?';
@@ -28,6 +28,7 @@ exports.getGroup = function(callback, gId){
 		callback(err, rows);
 	});
 }
+exports.getGroup = getGroup;
 
 // Returns collection complete group metadata
 function getSubgroupsFromGroup(callback, gId){
@@ -119,5 +120,24 @@ exports.setPosition = function(callback, uId, lat, lng, acc){
 	model.execute(query,[lat, lng, acc, uId], function(err, rows){
 		callback(err);
 	});
+}
+
+function removeUserFromRoot(callback, uId, rId){
+	query = 'DELETE FROM User_In_Group ug'
+		+ 'INNER JOIN Group g '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ? AND g.rId = ?';
+	model.execute(query,[uId, rId], function(err, rows){
+		callback(err);
+	});
+}
+
+exports.addUserToGroup = function(callback, uId, gId){
+	function callRemoveUserHelper(err, group) {
+		if(err == null){
+			removeUserFromRoot(callback, uId, gId);
+		}
+	}
+	getGroup(callRemoveUserHelper, gId);
 }
 
