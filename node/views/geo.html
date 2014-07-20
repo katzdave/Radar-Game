@@ -74,8 +74,10 @@
                 for(var row in rows){
                 	// add if disabled/root, don't allow click.
                 	var groupstr = '<div id="group' + rows[row].gId + '" class="blue button geobutton"';
-                	if (rows[row].isVisible == 0) groupstr += ' disabled="true"'
-                	groupstr += ' onclick="selectGroup(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
+                	if (rows[row].isVisible == '0')
+                		groupstr += '>' + rows[row].Groupname + '</div>';
+                	else
+                		groupstr += ' onclick="selectGroup(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
                     groupdiv.innerHTML += groupstr;
             	}
              }
@@ -90,8 +92,14 @@
       {
       	if (activeGroup == gId)
       		return;
-      	if (activeGroup != false && document.getElementById("group" + activeGroup))
-      		document.getElementById("group" + activeGroup).className = "blue button geobutton";
+      	if (activeGroup != false)
+      	{
+      	    if (document.getElementById("group" + activeGroup))
+      			document.getElementById("group" + activeGroup).className = "blue button geobutton";
+      		else
+      			// in case the user tries to delete the button really quickly
+      			activeGroup = false;
+      	}
       	document.getElementById("group" + gId).className = "selected button geobutton";
       	activeGroup = gId;
 
@@ -134,8 +142,8 @@
                 <div id="userlist">
                     
                     <ul id="usersulgame">
-                        <div id="usercreate" class="blue button geobutton">Game 1</div>
-                        <div id="usercreate" class="blue button geobutton">Game 2</div>
+                        <!--<div id="usercreate" class="blue button geobutton">Game 1</div>
+                        <div id="usercreate" class="blue button geobutton">Game 2</div>-->
                     </ul>
 
 
@@ -148,8 +156,8 @@
                 <div id="userlist">
                     
                     <ul id="usersulgroup">
-                        <div id="usercreate" class="blue button geobutton">Game 1</div>
-                        <div id="usercreate" class="blue button geobutton">Game 2</div>
+                        <!--<div id="usercreate" class="blue button geobutton">Game 1</div>
+                        <div id="usercreate" class="blue button geobutton">Game 2</div>-->
                     </ul>
 
 
