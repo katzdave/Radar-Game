@@ -231,3 +231,27 @@ exports.getUsersInSubgroups = function(callback, gId) {
 	}, gId);
 }
 
+exports.createRootGroup = function(callback, Groupname, isPublic, isVisible, Level, ImageUrl) {
+	query = 'Insert into Groups (Groupname, isPublic, isVisible, Level, ImageUrl, rId) '
+		+ 'values (?,?,?,?,?,0);';
+	model.execute(query, [Groupname, isPublic, isVisible, Level, ImageUrl], function(err, rows){
+		query2 = 'SELECT max(gId) m FROM Groups'
+		model.execute(query2, [], function(err,rows){
+			m = rows[0].m;
+			query3 = 'UPDATE Groups '
+				+ 'SET rId = ? '
+				+ 'WHERE gId = ?';
+			model.execute(query3, [m, m], function(err,rows){
+				callback(m);
+			});
+		});
+	});
+}
+
+exports.createSubGroup = function(callback, pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId) {
+	query = 'Insert into Groups (pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId) '
+		+ 'values (?,?,?,?,?,?,?);';
+	model.execute(query, [pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId], function(err, rows){
+		console.log(err);
+	});
+}
