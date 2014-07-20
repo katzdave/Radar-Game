@@ -37,17 +37,17 @@ create table Groups
 	CONSTRAINT pk_gId PRIMARY KEY (gId)
 );
 
-insert into Groups (Groupname, isPublic, isVisible, Level, rId)
-	values ('humans vs zombies', 1, 0, 0, 1);
+insert into Groups (Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values ('humans vs zombies', 1, 0, 0, 'http://humansvszombies.org/images/logo.jpg',1);
 
 insert into Groups (Groupname, isPublic, isVisible, Level, rId)
 	values ('field trip planner', 1, 0, 0, 2);
 
-insert into Groups (pId, Groupname, isPublic, isVisible, Level, rId)
-	values (1, 'humans', 0, 1, 1, 1);
+insert into Groups (pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values (1, 'humans', 0, 1, 1, 'http://fc05.deviantart.net/fs44/f/2009/115/b/9/My_stick_person_by_xIIStrawberriesIIx.png',1);
 
-insert into Groups (pId, Groupname, isPublic, isVisible, Level, rId)
-	values (1, 'zombies', 0, 1, 1, 1);
+insert into Groups (pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values (1, 'zombies', 0, 1, 1, 'http://foxfiredev.net/wp-content/uploads/2014/03/Zombie.jpg',1);
 
 insert into Groups (Groupname, isPublic, isVisible, Level, rId)
 	values ('random group', 1, 0, 0, 5);
