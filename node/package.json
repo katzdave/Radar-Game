@@ -8,6 +8,8 @@
   "dependencies": {
     "express": "*",
     "ejs": "*",
-    "mysql2": "*"
+    "mysql2": "*",
+    "passport": "*",
+    "passport-facebook": "*"
   }
 }
