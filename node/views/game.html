@@ -5,15 +5,16 @@
         <link rel='stylesheet' href='/css/game.css' />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script type='text/javascript' src='https://www.google.com/jsapi'></script>  
-        <script src="js/game.js"></script>
+        <script src="/js/game.js"></script>
+        <script> gId = <%= gId %>; </script>
     </head>
     <body>
         <div id="header">
             <div id="name">
-                <div id="logo">Humans vs. Zombies</div>
+                <div id="logo"><%= name %></div>
             </div>
             <div id="personal">
-                <span id="welcome">Welcome, Alpha!</span>
+                <span id="welcome">Welcome, <%= user %>!</span>
                 <span id="profilelink" class="link">
                     Profile
                 </span>
@@ -26,12 +27,7 @@
                 <div id="userlist">
                     <div id="usercreate" class="blue button">randomly assign</div>
                     <ul id="usersul">
-		        <li class="link" draggable="true">Ante</li>
-		        <li class="link" draggable="true">David</li>
-		        <li class="link" draggable="true">Kevin</li>
-		        <li class="link" draggable="true">Phillip</li>
                     </ul>
-                    <div id="userlistbuffer"></div>
                 </div>
             </div>
             <div id="main">
@@ -42,37 +38,9 @@
                     <div id="startgameheader">
                         <div id="startgame" class="blue button">START GAME!</div>
                     </div>
-                    <div id="groups">
-		        <ul id="groupslist">
-			    <li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">
-			        Humans
-				<img src="http://fc05.deviantart.net/fs44/f/2009/115/b/9/My_stick_person_by_xIIStrawberriesIIx.png" />
-			    </li>
-			    <li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">
-			        Zombies
-				<img src="http://foxfiredev.net/wp-content/uploads/2014/03/Zombie.jpg" />
-	                    </li>
-			    <li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">
-			        admin
-				<img src="http://socialmediababe.com/wp-content/uploads/2010/12/administrator.jpg" />
-		            </li>
-			    <li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">
-			        dead
-				<img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Red_x.svg/600px-Red_x.svg.png" />
-			    </li>
-			</ul>
-                    </div>
+                    <div id="groups"></div>
                 </div>
             </div>
         </div>
     </body>
-    <script>
-        function allowDrop(event) {
-	    event.preventDefault();
-	};
-        function drop(event) {
-	    event.preventDefault();
-	    alert('User added to group!');
-	};
-    </script>
 </html>

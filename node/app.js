@@ -54,7 +54,10 @@ app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/create' }));
-app.get('/game', routes.game);
+app.get('/game/:gId', routes.game);
+
+app.post('/listgroupusers', routes.listgroupusers);
+app.post('/listsubgroups', routes.listsubgroups);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

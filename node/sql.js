@@ -20,14 +20,15 @@ exports.getUsersFromGroup = function(callback, gId){
 }
 
 // Returns complete group metadata
-exports.getGroup = function(callback, gId){
+function getGroup(callback, gId) {
 		query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'WHERE g.gId = ?';
-	model.execute(query, gId, function(err, rows){
+	model.execute(query, [gId], function(err, rows){
 		callback(err, rows);
 	});
 }
+exports.getGroup = getGroup;
 
 // Returns collection complete group metadata
 function getSubgroupsFromGroup(callback, gId){
@@ -46,7 +47,7 @@ exports.getSubgroupsFromGroup = getSubgroupsFromGroup;
 /* Callback format: callback(err, groupTree) */
 function getGroupTreeHelper(callback, current, ans) {
 	if (current.length === 0) {
-		callback(ans);
+		callback(false, ans);
 		return;
 	}
 	var gid = current[current.length - 1];
@@ -60,7 +61,9 @@ function getGroupTreeHelper(callback, current, ans) {
 	}, gid);
 }
 exports.getGroupTree = function(callback, gId) {
-	getGroupTreeHelper(callback, [gId], []);
+	getGroup(function(err, group) {
+		getGroupTreeHelper(callback, [gId], group);
+	}, gId);
 }
 
 //Returns root groups for a user

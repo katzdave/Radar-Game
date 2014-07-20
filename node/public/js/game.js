@@ -1,7 +1,11 @@
 
+google.load('visualization', '1', {packages:['orgchart']});
+google.setOnLoadCallback(drawChart);
 var groupusers;
+var subgroups;
+
 function listusers() {
-    $.post('/listgroupusers', function(data) {
+    $.post('/listgroupusers', {gId: gId}, function(data) {
 	groupusers = data.result;
 	var html = '';
 	for (var i = 0; i < data.result.length; i++) {
@@ -13,19 +17,34 @@ function listusers() {
     });
 }
 
-var subgroups;
-function listsubgroups() {
-    $.post('/listsubgroups', function(data) {
-	subgroups = data.result;
-	var html = '';
-	for (var i = 0; i < data.result.length; i++) {
-	    html += '<li class="grou" ondrop="drop(event, ' + i + ')" ondragover="allowDrop(event)">';
-	    html += data.result[i].Name;
-	    html += '<img src="' + data.result[i].imageURL + '" />';
+function drawChart() {
+    $.post('/listsubgroups', {gId: gId}, function(res) {
+        subgroups = res.result;
+        data = new google.visualization.DataTable();
+        data.addColumn('string', 'Node');
+        data.addColumn('string', 'Parent');
+	var rows = [];
+        for (var i = 0; i < res.result.length; i++) {
+	    var html = '<li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">';
+	    html += '<div>' + res.result[i].Groupname + '</div>';
+	    html += '<img src="' + res.result[i].ImageUrl + '" />';
 	    html += '</li>';
+	    var gId = res.result[i].gId;
+	    var pId = res.result[i].pId;
+	    rows.push([{v: gId.toString(), f: html}, pId && pId.toString()]);
 	}
-	$('#groupslist').html(html);
+	data.addRows(rows);
+        chart = new google.visualization.OrgChart(document.getElementById('groups'));
+        chart.draw(data, {allowHtml: true, nodeClass: 'treenode', selectedNodeClass: 'treenode_select'});
+        google.visualization.events.addListener(chart, 'select', function(data) {
+          // code
+        });
     });
+}
+
+function addusertogroup(user, group) {
+	console.log(user);
+	console.log(group);
 }
 
 function drag(event, userIndex) {
@@ -34,43 +53,13 @@ function drag(event, userIndex) {
 
 function drop(event, groupIndex) {
     event.preventDefault();
+    addusertogroup(event.dataTransfer.getData('user'), subgroups[groupIndex]);
 }
 
 function allowDrop(event) {
     event.preventDefault();
 }
 
-google.load('visualization', '1', {packages:['orgchart']});  
-google.setOnLoadCallback(drawChart);  
-function drawChart() {  
-  data = new google.visualization.DataTable();  
-  data.addColumn('string', 'Node');  
-  data.addColumn('string', 'Parent');  
-  node0 = '<li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">' +
- 	 'HvZ' +
- 	 '<img src="http://humansvszombies.org/images/logo.jpg" />' +
-          '</li>';
-  node1 = '<li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">' +
- 	 'Humans' +
- 	 '<img src="http://fc05.deviantart.net/fs44/f/2009/115/b/9/My_stick_person_by_xIIStrawberriesIIx.png" />' +
- 	 '</li>';
-  node2 = '<li class="grou" ondrop="drop(event)" ondragover="allowDrop(event)">' +
-          'Zombies' +
- 	 '<img src="http://foxfiredev.net/wp-content/uploads/2014/03/Zombie.jpg" />' +
- 	 '</li>';
- 
-  data.addRows([  
-    [node0, ''],
-    [node1, node0],
-    [node2, node0]
-  ]);  
-  chart = new google.visualization.OrgChart(document.getElementById('groups'));  
-  chart.draw(data, {allowHtml: true, nodeClass: 'treenode', selectedNodeClass: 'treenode_select'});  
-  google.visualization.events.addListener(chart, 'select', function(data) {
-    // code
-  });
-}  
-
 $(document).ready(function() {
-  drawChart();
+  listusers();
 });
