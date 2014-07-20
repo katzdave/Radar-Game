@@ -61,9 +61,6 @@ create table User_In_Group
 );
 
 insert into User_In_Group (gId, uId, isAdmin)
-	values (1,1,0);
-
-insert into User_In_Group (gId, uId, isAdmin)
 	values (2,1,0);
 
 insert into User_In_Group (gId, uId, isAdmin)
@@ -75,3 +72,11 @@ create table Rules
 	Filename varchar(64) NOT NULL,
 	CONSTRAINT pk_rId PRIMARY KEY (rId)
 );
+
+-- DELETE ug FROM User_In_Group ug 
+-- INNER JOIN Groups g 
+-- ON g.gId = ug.gId 
+-- WHERE ug.uId = 1 AND g.rId = 1;
+
+-- INSERT into User_In_Group (gId, uId, isAdmin) 
+-- VALUES (4,1,0);
