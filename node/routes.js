@@ -37,7 +37,7 @@ exports.getRootGroups = function(req, res) {
 };
 
 exports.getSubGroups = function(req, res) {
-   sql.getSubGroups(function(err,rows) {
+   sql.getSubgroupsFromUser(function(err,rows) {
        response = {err: err,rows: rows};
        res.send(response);
    }, req.body.uId, req.body.gId);
