@@ -108,36 +108,10 @@
       	}
       	document.getElementById("group" + gId).className = "selected button geobutton";
       	activeGroup = gId;
-
+        getOtherLocations(gId);
       }
 
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8
-        };
-        map = new google.maps.Map(document.getElementById("map-canvas"),{
-            zoom: 19,
-            center: new google.maps.LatLng(-34.397, 150.644),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            mapTypeControl: false,
-            streetViewControl: false,
-            panControl: false,
-            rotateControl: true,
-            zoomControlOptions: {
-               position: google.maps.ControlPosition.LEFT_BOTTOM
-            }});
-        new google.maps.Marker({position: {lat: 37.786, lng: -122.4052}, icon: "http://54.186.80.240/img/red-dot.png", map: map}); 
-        own_marker = new google.maps.Marker({position: {lat: 37.7861, lng: -122.5052}, icon: "http://54.186.80.240/img/green-dot.png", map: map});
-        
-
-        /*for (marker_key in markers)
-        {
-        	markers[marker_key] = 
-        } */
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-
+ 
 
     </script>
   <link rel='stylesheet' href='/css/game.css' />
@@ -151,7 +125,7 @@
         <div id="namelink">Games</div>
         <div id="groupslink">Groups</div>
     </div>-->
-    <div id="groups_content">
+    <div id="groups_content" style="width: 100%; height: 25%; margin: auto;">
       <div id="usersgroup">
       <div id = "userheader">Games</div>
         <div id="gameslist">
@@ -169,10 +143,9 @@
         <div id="warning"></div>
     </div>
 
-    <div id="map-canvas" style="width: 85%; height: 80%"></div>
+    <div id="map-canvas" style="width: 100%; height: 75%; margin: auto;"></div>
     <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
-<script type = "text/javascript">
-</script>
+
 
 </body>
 </html>

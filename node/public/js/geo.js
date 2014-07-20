@@ -19,7 +19,7 @@ function initialize() {
            position: google.maps.ControlPosition.LEFT_BOTTOM
         }
     });
-}
+ }
 google.maps.event.addDomListener(window, 'load', initialize);
 
 var x;
@@ -71,6 +71,7 @@ function getSubgroups() {
         for (var i = 0; i < data.rows.length; i++) {
 	    html += '<li id="subgroup' + data.rows[i].gId + '" class="blue button geobutton">' + data.rows[i].Groupname + '</li>';
 	}
+
 	$('#groupslistul').html(html);
 	$('.geobutton').on('click', function(e) {
 	    var id = e.target.id;
@@ -100,6 +101,6 @@ function getOtherLocations(gId) {
 
 $(document).ready(function() {
     x = document.getElementById("warning");
-    getSubgroups();
+    //getSubgroups();
     getLocation();
 });
