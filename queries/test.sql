@@ -17,7 +17,7 @@ create table Users
 );
 
 insert into Users (Username, fbId)
-	values ('Phillip', '10204104201666194');
+	values ('Phillipe', 'sadfasdfd');
 
 insert into Users (Username, fbId)
 	values ('Ante', 'lolfuckyou');
