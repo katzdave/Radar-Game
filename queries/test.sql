@@ -7,8 +7,8 @@ drop table Rules;
 create table Users
 (
 	uId int NOT NULL AUTO_INCREMENT,
+	fbId varchar(32) NOT NULL,
 	Username varchar(32) NOT NULL,
-	Phone varchar(32) NOT NULL,
 	Latitude double,
 	Longitude double,
 	Accuracy double,
