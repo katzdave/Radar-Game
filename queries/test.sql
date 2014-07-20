@@ -26,6 +26,7 @@ create table Groups
 (
 	gId int NOT NULL AUTO_INCREMENT,
 	pId int,
+	rId int NOT NULL,
 	Level int NOT NULL,
 	Groupname varchar(64) NOT NULL,
 	Description varchar(256),
@@ -36,17 +37,20 @@ create table Groups
 	CONSTRAINT pk_gId PRIMARY KEY (gId)
 );
 
-insert into Groups (Groupname, isPublic, isVisible, Level)
-	values ('humans vs zombies', 1, 0, 0);
+insert into Groups (Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values ('humans vs zombies', 1, 0, 0, 'http://humansvszombies.org/images/logo.jpg',1);
 
 insert into Groups (Groupname, isPublic, isVisible, Level)
-	values ('field trip planner', 1, 0, 0);
+	values ('third group', 1, 0, 0);
 
-insert into Groups (pId, Groupname, isPublic, isVisible, Level)
-	values (1, 'humans', 0, 1, 1);
+insert into Groups (pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values (1, 'humans', 0, 1, 1, 'http://fc05.deviantart.net/fs44/f/2009/115/b/9/My_stick_person_by_xIIStrawberriesIIx.png',1);
 
-insert into Groups (pId, Groupname, isPublic, isVisible, Level)
-	values (1, 'zombies', 0, 1, 1);
+insert into Groups (pId, Groupname, isPublic, isVisible, Level, ImageUrl, rId)
+	values (1, 'zombies', 0, 1, 1, 'http://foxfiredev.net/wp-content/uploads/2014/03/Zombie.jpg',1);
+
+insert into Groups (Groupname, isPublic, isVisible, Level, rId)
+	values ('random group', 1, 0, 0, 5);
 
 create table User_In_Group
 (
@@ -57,10 +61,10 @@ create table User_In_Group
 );
 
 insert into User_In_Group (gId, uId, isAdmin)
-	values (1,1,0);
+	values (2,1,0);
 
 insert into User_In_Group (gId, uId, isAdmin)
-	values (2,1,0);
+	values (3,1,0);
 
 create table Rules
 (
@@ -68,3 +72,11 @@ create table Rules
 	Filename varchar(64) NOT NULL,
 	CONSTRAINT pk_rId PRIMARY KEY (rId)
 );
+
+-- DELETE ug FROM User_In_Group ug 
+-- INNER JOIN Groups g 
+-- ON g.gId = ug.gId 
+-- WHERE ug.uId = 1 AND g.rId = 1;
+
+-- INSERT into User_In_Group (gId, uId, isAdmin) 
+-- VALUES (4,1,0);
