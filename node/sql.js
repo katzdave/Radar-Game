@@ -30,13 +30,37 @@ exports.getGroup = function(callback, gId){
 }
 
 // Returns collection complete group metadata
-exports.getSubgroupsFromGroup = function(callback, gId){
+function getSubgroupsFromGroup(callback, gId){
 	query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'WHERE g.pId = ?';
 	model.execute(query, gId, function(err, rows){
 		callback(err, rows);
 	});
+}
+exports.getSubgroupsFromGroup = getSubgroupsFromGroup;
+
+/* This function returns JSON object that contains a tree of all the groups under group gId.
+ *  If gId == null, this returns a JSON object of trees of all the groups. 
+ *  If gId is invalid, returns an error. */
+/* Callback format: callback(err, groupTree) */
+function getGroupTreeHelper(callback, current, ans) {
+	if (current.length === 0) {
+		callback(ans);
+		return;
+	}
+	var gid = current[current.length - 1];
+	current.length = current.length - 1;
+	getSubgroupsFromGroup(function(err, rows) {
+		for (var i = 0; i < rows.length; i++) {
+			current.push(rows[i].gId);
+			ans.push(rows[i]);
+		}
+		getGroupTreeHelper(callback, current, ans);
+	}, gid);
+}
+exports.getGroupTree = function(callback, gId) {
+	getGroupTreeHelper(callback, [gId], []);
 }
 
 //Returns root groups for a user
@@ -68,14 +92,6 @@ exports.getRootGroups = function(callback, uId){
 // 	}
 // 	while (condition);
 // }
-
-/* This function returns JSON object that contains a tree of all the groups under group gId.
- *  If gId == null, this returns a JSON object of trees of all the groups. 
- *  If gId is invalid, returns an error. */
-/* Callback format: callback(err, groupTree) */
-exports.getGroupTree = function(callback, gId) {
-
-}
 
 /* This function checks the database to see if there already is a user associated with this
  * facebook ID. If so, return the user. Else return an error */
