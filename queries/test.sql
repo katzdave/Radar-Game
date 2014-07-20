@@ -1,5 +1,6 @@
+use radar;
 drop table Users;
-drop table Group;
+drop table Groups;
 drop table User_In_Group;
 drop table Rules;
 
@@ -8,6 +9,9 @@ create table Users
 	uId int NOT NULL AUTO_INCREMENT,
 	Username varchar(32) NOT NULL,
 	Phone varchar(32) NOT NULL,
+	Latitude int,
+	Longitude int,
+	LastUpdate DATETIME,
 	CONSTRAINT pk_uId PRIMARY KEY (uId)
 );
 
