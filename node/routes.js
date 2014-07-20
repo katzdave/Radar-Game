@@ -2,6 +2,7 @@ var createEvent = require('./createEvent');
 var sql = require('./sql');
 
 exports.home = function(req, res) {
+  console.log(req.user);  // FTW!
   res.render('index.html', {user: 'Alpha'});
 };
 

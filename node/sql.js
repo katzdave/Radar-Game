@@ -103,6 +103,13 @@ exports.getUserFromFbid = function(callback, fbId){
 	});
 }
 
+exports.getGroupsFromUid = function(uId, callback){
+    query = 'SELECT * from User_In_Group WHERE uId = ?';
+    model.execute(query, uId, function(err, rows){
+        callback(err, rows);
+    });
+}
+
 /* This function attempts to insert a user into the database.
  * Will fail if they ar already present */
 /* Callback format: callback(err); */
