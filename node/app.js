@@ -11,9 +11,8 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://next.sexy:8080/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate(profile, function(err, user) {
-      if (err) { return done(err); }
-      done(null, user);
+    process.nextTick(function(){
+      return done(null, profile);
     });
   }
 ));
