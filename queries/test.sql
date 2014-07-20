@@ -108,6 +108,7 @@ insert into User_In_Group (gId, uId, isAdmin)
 
 insert into User_In_Group (gId, uId, isAdmin)
 	values (1,12,0);
+	
 create table Rules
 (
 	rId int NOT NULL AUTO_INCREMENT,
