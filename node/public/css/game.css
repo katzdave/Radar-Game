@@ -1,0 +1,188 @@
+@font-face { 
+    font-family: airplane; 
+    font-weight: normal;
+    src: url('airplane.ttf'); 
+} 
+
+body {
+    background-image: url('bg.png');
+    font-family: Roboto, arial;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: #eeeeee;
+}
+
+li {
+    list-style-type: none;
+}
+
+table {
+    margin: 10px auto;
+}
+
+.link {
+    color: #cccccc;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: #eeeeee;
+}
+
+.info {
+    position: absolute;
+    display: none;
+    background-color: #000000;
+    border: 1px solid;
+    border-color: #555555;
+    border-radius: 6px;
+    padding: 3px;
+}
+
+.button {
+    display: block;
+    margin: 6 auto;
+    border: 0;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 3px;
+    color: #eeeeee;
+    text-align: center;
+    max-width: 150px;
+    cursor: pointer;
+}
+
+.blue {
+    background-color: #2079DF;
+    width: 50%;
+}
+
+.blue:hover {
+    background-color: #4099FF;
+}
+
+.cancel {
+    background-color: #B90505;
+    width: 40%;
+}
+
+.cancel:hover {
+    background-color: #D92525;
+}
+
+#header {
+    height: 60px;
+    margin: 20px;
+}
+
+#name {
+    font-family: Roboto, arial;
+    font-size: 40px;
+    float: left;
+}
+
+#personal {
+    font-family: Roboto, arial;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: right;
+    padding-top: 5px;
+}
+
+#welcome, #loginlink, #registerlink, #profilelink, #logout {
+    margin-left: 20px;
+    position: relative;
+}
+
+#loginlink, #registerlink, #profilelink, #logout {
+    border: 1px solid;
+    border-color: #555555;
+    border-radius: 3px;
+    padding: 6px;
+}
+
+#login {
+    right: -10px;
+}
+
+#loginlink:hover #login {
+    display: block;
+}
+
+#content {
+    margin: 20px;
+}
+
+#users {
+    width: 25%;
+    float: left;
+}
+
+#userheader {
+    color: #ffffff;
+    background-color: #AE113E;
+    font-size: 1.4em;
+    padding: 4px 4px 6px 6px;
+    font-weight: 400;
+}
+
+#userlist {
+    background-color: rgba(0,0,0,0.3);
+    min-height: 100%;
+    text-align: center;
+}
+
+#userlist ul {
+    list-style-type: none;
+    padding: 15px;
+    margin: 0;
+}
+
+#userlist li {
+    font-size: 20px;
+    position: relative;
+    border: 1px solid;
+    border-color: #555555;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+#main {
+    margin-left: 26%;
+    min-width: 60%;
+}
+
+#mainheader {
+    color: #ffffff;
+    background-color: #39DB4F;
+    font-size: 1.4em;
+    padding: 4px 4px 6px 6px;
+    font-weight: 400;
+}
+
+#mainuser {
+    background-color: rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+#groups {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.grou {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: 3px white solid;
+    margin: 10px auto;
+    margin-right: 50px;
+    padding: 10px;
+}
+
+.grou img {
+    display: relative;
+    width: 140px;
+    height: 140px;
+}

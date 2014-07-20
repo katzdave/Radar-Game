@@ -29,6 +29,7 @@ app.get('/', routes.home);
 app.get('/geo', routes.geo);
 app.get('/create', routes.create);
 app.get('/facebook', routes.facebook);
+app.get('/game', routes.game);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
