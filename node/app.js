@@ -42,7 +42,7 @@ everyauth.facebook
     return usersByFbId[fbUserMetadata.id] ||
         (usersByFbId[fbUserMetadata.id] = addUser('facebook', fbUserMetadata));
   })
-  .redirectPath('/create');
+  .redirectPath('/');
  // Step 2 code
 var app = express();
 // all environments
@@ -68,12 +68,14 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.home);
-app.get('/geo', routes.geo);
+app.get('/join', routes.join);
 app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
 app.get('/game', routes.game);
 app.post('/getSubGroups', routes.getSubGroups);
 app.get('/game/:gId', routes.game);
+app.get('/geo', routes.geo);
+app.get('/geo/:gId', routes.geo);
 
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);
