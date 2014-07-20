@@ -44,6 +44,7 @@ if ('development' == app.get('env')) {
 app.get('/', routes.home);
 app.get('/geo', routes.geo);
 app.get('/create', routes.create);
+app.post('/getRootGroups', routes.getRootGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
 app.get('/game', routes.game);

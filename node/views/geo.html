@@ -10,9 +10,22 @@
       #map-canvas { height: 80% }
     </style>
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAUeCEPWBuJBrgOC2tgbTCfeONThql9f5Q"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	    <script type="text/javascript">
 	    var map;
+	    var markers;
 	    var own_marker;
+	    var uId = '<%= uId %>';
+	    var err;
+	    var rows;
+        $.post('/getRootGroups',{uId:uId},function(response) {
+             console.log(response.err);
+             console.log(response.rows);
+             err = response.err;
+             rows = response.rows;
+        });
+
+
       function initialize() {
         var mapOptions = {
           center: new google.maps.LatLng(-34.397, 150.644),
@@ -30,19 +43,24 @@
                position: google.maps.ControlPosition.LEFT_BOTTOM
             }});
         new google.maps.Marker({position: {lat: 37.786, lng: -122.4052}, icon: "http://54.186.80.240/img/red-dot.png", map: map}); 
-        own_marker = new google.maps.Marker({position: {lat: 37.7861, lng: -122.5052}, icon: "http://54.186.80.240/img/green-dot.png", map: map}); 
+        own_marker = new google.maps.Marker({position: {lat: 37.7861, lng: -122.5052}, icon: "http://54.186.80.240/img/green-dot.png", map: map});
+        
+
+        /*for (marker_key in markers)
+        {
+        	markers[marker_key] = 
+        } */
       }
       google.maps.event.addDomListener(window, 'load', initialize);
 
 
-   
     </script>
 
 </head>
 <body >
 
 
-  <p>Hello, dfkj <%= user %>!</p>
+  <p>Hello, dfkj <%= uId %>!</p>
 
   <p id="demo">i don't think this works, bro</p>
 
@@ -90,8 +108,8 @@ function showPosition(position) {
     	x.innerHTML += "<br>No heading.";
     }
 
-    x.innerHTML = JSON.stringify(position.coords);
-
+    x.innerHTML = JSON.stringify(position.coords) + "<br> uId = " + uId + "<br> err = " + JSON.stringify(err) + "<br> rows = " + JSON.stringify(rows);
+ 
     map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
     own_marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
 }
