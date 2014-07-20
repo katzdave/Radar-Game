@@ -12,3 +12,10 @@ img{
     margin:auto;
     width:100%;
 }
+.button{
+    float:left;
+    width:25%;
+    max-width: 320px;
+    color:#333333;
+    padding:12.5%;
+}

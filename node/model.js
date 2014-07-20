@@ -32,4 +32,3 @@ exports.execute = function(query, args, callback) {
     }
   });
 }
-
