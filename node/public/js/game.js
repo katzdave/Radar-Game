@@ -28,6 +28,7 @@ function drawChart() {
 	    var html = '<li class="grou" ondrop="drop(event, ' + i + ')" ondragover="allowDrop(event)">';
 	    html += '<div>' + res.result[i].Groupname + '</div>';
 	    html += '<img src="' + res.result[i].ImageUrl + '" />';
+	    html += '<div id="subgroupinfo' + i + '" class="subgroupinfo"></div>';
 	    html += '</li>';
 	    var gId = res.result[i].gId;
 	    var pId = res.result[i].pId;
@@ -41,6 +42,15 @@ function drawChart() {
 	  var gId = selection.length === 0 ? this_gId : subgroups[selection[0].row].gId;
 	  listusers(gId);
         });
+	for (var i = 0; i < res.result.length; i++) {
+	  function listgroupuserswrapper(index) {
+	    $.post('/listgroupusers', {gId: subgroups[i].gId}, function(res) {
+	      var html = res.result.length + ' members';
+	      $('#subgroupinfo' + index).html(html);
+	    });
+	  };
+	  listgroupuserswrapper(i);
+	}
     });
 }
 
