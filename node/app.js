@@ -75,6 +75,8 @@ app.get('/game', routes.game);
 app.get('/game/:gId', routes.game);
 app.get('/geo', routes.geo);
 app.get('/geo/:uId', routes.geo);
+app.get('/makerule', routes.makerule);
+app.post('/makerule', routes.postmakerule);
 
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);

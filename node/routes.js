@@ -32,6 +32,16 @@ exports.facebook = function(req, res) {
   res.render('facebook.html');
 };
 
+exports.makerule = function(req, res) {
+  res.render('makerule.html', {message: ''});
+}
+
+exports.postmakerule = function(req, res) {
+  var hvz = require('./xmlparse/hvz.js');
+  hvz.doSomething(req.body.game);
+  res.render('makerule.html', {message: 'Rule file submitted.'});
+}
+
 exports.game = function(req, res) {
   sql.getGroup(function(err, group) {
     if (err || group.length == 0) {

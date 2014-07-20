@@ -1,0 +1,35 @@
+<!doctype = html>
+<head>
+    <title>Radar</title>
+    <link rel="stylesheet" href="css/radarmain.css">
+</head>
+<body>
+    <div id="content">
+        <img id="logoimg" src="images/radarlogo.svg" height="200px"></img>
+        <div id="upload">
+	    <h3>UPLOAD RULES FILE</h3>
+	    <p><%= message %></p>
+	    <form method="post" id="form">
+	        Title: <input type="text" value="Human vs. Zombie" />
+	        <textarea id="textarea" name="game", form="form">
+	        </textarea>
+	        <input type="submit" value="Submit" />
+	    </form>
+        </div>
+    </div>
+    <style>
+	h3 {
+	    font-size: 36px;
+	}
+	input {
+	    font-size: 24px;
+	}
+	#upload div {
+	    margin: 0 auto;
+	}
+	#textarea {
+	    width: 800px;
+	    height: 300px;
+	}
+    </style>
+</body>
