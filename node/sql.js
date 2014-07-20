@@ -30,13 +30,37 @@ exports.getGroup = function(callback, gId){
 }
 
 // Returns collection complete group metadata
-exports.getSubgroupsFromGroup = function(callback, gId){
+function getSubgroupsFromGroup(callback, gId){
 	query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'WHERE g.pId = ?';
 	model.execute(query, gId, function(err, rows){
 		callback(err, rows);
 	});
+}
+exports.getSubgroupsFromGroup = getSubgroupsFromGroup;
+
+/* This function returns JSON object that contains a tree of all the groups under group gId.
+ *  If gId == null, this returns a JSON object of trees of all the groups. 
+ *  If gId is invalid, returns an error. */
+/* Callback format: callback(err, groupTree) */
+function getGroupTreeHelper(callback, current, ans) {
+	if (current.length === 0) {
+		callback(ans);
+		return;
+	}
+	var gid = current[current.length - 1];
+	current.length = current.length - 1;
+	getSubgroupsFromGroup(function(err, rows) {
+		for (var i = 0; i < rows.length; i++) {
+			current.push(rows[i].gId);
+			ans.push(rows[i]);
+		}
+		getGroupTreeHelper(callback, current, ans);
+	}, gid);
+}
+exports.getGroupTree = function(callback, gId) {
+	getGroupTreeHelper(callback, [gId], []);
 }
 
 //Returns root groups for a user
@@ -51,26 +75,23 @@ exports.getRootGroups = function(callback, uId){
 	});
 }
 
-//Returns tiered groups for a user
-//Inputs uId, gId of root
-exports.getTieredGroups = function(callback, uId, gId){
-	query = 'SELECT * '
-		+ 'FROM Groups g '
-		+ 'INNER JOIN User_In_Group ug '
-		+ 'ON g.gId = ug.gId '
-		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
-	model.execute(query, uId, function(err, rows){
-		callback(err, rows);
-	});
-}
-
-/* This function returns JSON object that contains a tree of all the groups under group gId.
- *  If gId == null, this returns a JSON object of trees of all the groups. 
- *  If gId is invalid, returns an error. */
-/* Callback format: callback(err, groupTree) */
-exports.getGroupTree = function(callback, gId) {
-
-}
+// //Returns tiered groups for a user
+// //Inputs uId, gId of root
+// exports.getTieredGroups = function(callback, uId, gId){
+// 	query = 'SELECT * '
+// 		+ 'FROM Groups g '
+// 		+ 'INNER JOIN User_In_Group ug '
+// 		+ 'ON g.gId = ug.gId '
+// 		+ 'WHERE ug.uId = ? AND g.gId = ?;';
+// 	grouplist = [];
+// 	while(1) {
+//     	model.execute(query, gId, function(err, rows){
+// 			if(rows == null)
+// 				break;
+// 		});
+// 	}
+// 	while (condition);
+// }
 
 /* This function checks the database to see if there already is a user associated with this
  * facebook ID. If so, return the user. Else return an error */
