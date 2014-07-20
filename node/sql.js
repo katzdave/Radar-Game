@@ -216,7 +216,7 @@ exports.addUserToGroup = function(callback, uId, gId, isAdmin){
 }
 
 // Returns complete user metadata
-exports.getUsersInSubgroups = function(callback, gId) {
+function getUsersInSubgroups(callback, gId) {
 	getGroupTree(function(err, groups) {
 		var count = groups.length;
 		var allUsers = [];
@@ -225,6 +225,21 @@ exports.getUsersInSubgroups = function(callback, gId) {
 				allUsers = allUsers.concat(users);
 				if (--count === 0) {
 					callback(false, allUsers);
+				}
+			}, groups[i].gId);
+		}
+	}, gId);
+}
+
+exports.getColoredUsersInSubgroups = function(callback, gId) {
+	getSubgroupsFromGroup(function(err, groups) {
+		var obj = [];
+		var count = groups.length;
+		for (var i = 0; i < groups.length; i++) {
+			getUsersInSubgroups(function(err, users) {
+				obj.push(users);
+				if (--count === 0) {
+					callback(false, obj);
 				}
 			}, groups[i].gId);
 		}
