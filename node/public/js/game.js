@@ -3,8 +3,11 @@ google.load('visualization', '1', {packages:['orgchart']});
 google.setOnLoadCallback(drawChart);
 var groupusers;
 var subgroups;
+var chart = undefined;
 
-function listusers(gId) {
+function listusers() {
+    var gId = (!chart || chart.getSelection().length === 0) ?
+    	this_gId : subgroups[chart.getSelection()[0].row].gId;
     $.post('/listgroupusers', {gId: gId}, function(data) {
 	groupusers = data.result;
 	var html = '';
@@ -28,6 +31,7 @@ function drawChart() {
 	    var html = '<li class="grou" ondrop="drop(event, ' + i + ')" ondragover="allowDrop(event)">';
 	    html += '<div>' + res.result[i].Groupname + '</div>';
 	    html += '<img src="' + res.result[i].ImageUrl + '" />';
+	    html += '<div id="subgroupinfo' + i + '" class="subgroupinfo"></div>';
 	    html += '</li>';
 	    var gId = res.result[i].gId;
 	    var pId = res.result[i].pId;
@@ -37,16 +41,28 @@ function drawChart() {
         chart = new google.visualization.OrgChart(document.getElementById('groups'));
         chart.draw(data, {allowHtml: true, nodeClass: 'treenode', selectedNodeClass: 'treenode_select'});
         google.visualization.events.addListener(chart, 'select', function(data) {
-	  var selection = chart.getSelection();
-	  var gId = selection.length === 0 ? this_gId : subgroups[selection[0].row].gId;
-	  listusers(gId);
+	  listusers();
         });
+	updateGroupDetails();
     });
+}
+
+function updateGroupDetails() {
+	for (var i = 0; i < subgroups.length; i++) {
+	  function listgroupuserswrapper(index) {
+	    $.post('/listgroupusers', {gId: subgroups[i].gId}, function(res) {
+	      var html = res.result.length + ' members';
+	      $('#subgroupinfo' + index).html(html);
+	    });
+	  };
+	  listgroupuserswrapper(i);
+	}
 }
 
 function addusertogroup(uId, gId) {
     $.post('/addusertogroup', {uId: uId, gId: gId}, function(res) {
-	listusers(this_gId);
+	listusers();
+	updateGroupDetails();
     });
 }
 
@@ -64,5 +80,5 @@ function allowDrop(event) {
 }
 
 $(document).ready(function() {
-  listusers(this_gId);
+  listusers();
 });

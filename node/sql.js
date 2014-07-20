@@ -7,8 +7,7 @@ var model = require('./model');
 // 	});
 // }
 
-// Returns complete user metadata
-exports.getUsersFromGroup = function(callback, gId){
+function getUsersFromGroup(callback, gId) {
 	query = 'SELECT u.uId, u.Username, u.fbId, u.Latitude, u.Longitude, u.Accuracy, u.LastUpdate '
 		+ 'FROM Users u '
 		+ 'INNER JOIN User_In_Group ug '
@@ -18,6 +17,7 @@ exports.getUsersFromGroup = function(callback, gId){
 			callback(err, rows);
 	});
 }
+exports.getUsersFromGroup = getUsersFromGroup;
 
 // Returns complete group metadata
 function getGroup(callback, gId){
@@ -60,22 +60,81 @@ function getGroupTreeHelper(callback, current, ans) {
 		getGroupTreeHelper(callback, current, ans);
 	}, gid);
 }
-exports.getGroupTree = function(callback, gId) {
+function getGroupTree(callback, gId) {
 	getGroup(function(err, group) {
 		getGroupTreeHelper(callback, [gId], group);
 	}, gId);
 }
+exports.getGroupTree = getGroupTree;
 
 //Returns root groups for a user
 exports.getRootGroups = function(callback, uId){
+	query = 'SELECT rId '
+		+ 'FROM Groups g '
+		+ 'INNER JOIN User_In_Group ug '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ?;';
+
+
+	model.execute(query, uId, function(err, rows){
+		if (err)
+		{
+			callback(err, rows);
+	    }
+	    else
+	    {
+	    	var result_table = {};
+            expandRootTable(callback, result_table, err, rows, 0);
+	    }
+	});
+}
+function expandRootTable(final_callback, table, errr, overall_rows, i) {
+      if ( i == overall_rows.length)
+      {
+     	 final_callback(errr, table);
+         return;
+      }
+
+      console.log(JSON.stringify(overall_rows));
+      getGroup(function(err, rows){
+      	      console.log(JSON.stringify(rows));
+      	  table[i] = rows[0];
+          expandRootTable(final_callback, table, err, overall_rows, i + 1);
+      }, overall_rows[i].rId);
+
+}
+
+// returns all memberships of the user
+exports.getSubgroupsFromUser = function(callback, uId, gId){
 	query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'INNER JOIN User_In_Group ug '
 		+ 'ON g.gId = ug.gId '
-		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
-	model.execute(query, uId, function(err, rows){
-		callback(err, rows);
+		+ 'WHERE ug.uId = ? AND g.rId = ?;';
+	model.execute(query,[uId, gId], function(err, rows){
+        if (err)
+        {
+			callback(err, rows);
+		}
+		else
+		{
+			expandSubgroupTable(callback, rows, err, rows[0].pId)
+		}
 	});
+}
+
+function expandSubgroupTable(final_callback, table, errr, gId) {
+	 if (gId == null) {
+         final_callback(errr, table.reverse());
+         return;
+	 }
+      console.log(JSON.stringify(table));
+      getGroup(function(err, rows){
+      	      console.log(JSON.stringify(rows));
+      	  table.push( rows[0]);
+          expandSubgroupTable(final_callback, table, err, rows[0].pId);
+      }, gId);
+
 }
 
 //Returns all groups for a user
@@ -148,11 +207,27 @@ exports.addUserToGroup = function(callback, uId, gId, isAdmin){
 
 	function callRemoveUserHelper(err, group) {
 		if(err == null){
-			removeUserFromRoot(console.log, uId, group[0].rId);
+			removeUserFromRoot(callback, uId, group[0].rId);
 		}else{
-			console.log(err);
+			callback(err);
 		}
 	}
 	getGroup(callRemoveUserHelper, gId);
+}
+
+// Returns complete user metadata
+exports.getUsersInSubgroups = function(callback, gId) {
+	getGroupTree(function(err, groups) {
+		var count = groups.length;
+		var allUsers = [];
+		for (var i = 0; i < groups.length; i++) {
+			getUsersFromGroup(function(err, users) {
+				allUsers = allUsers.concat(users);
+				if (--count === 0) {
+					callback(false, allUsers);
+				}
+			}, groups[i].gId);
+		}
+	}, gId);
 }
 
