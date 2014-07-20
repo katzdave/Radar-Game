@@ -3,4 +3,8 @@
 exports.createNewEvent = function(req, res){
   //first ask for a login
   res.render('facebook.html');
+  //should have a session and profile object.
+  
 };
+
+
