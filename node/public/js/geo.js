@@ -89,7 +89,7 @@ function getSubgroups() {
 
 function getOtherLocations(gId) {
     for (var i = 0; i < markers.length; i++) {
-	markers[i].setMap(null);
+	   markers[i].setMap(null);
     }
     markers = [];
     $.post('/getcoloredsubgroups', {gId: 1}, function(data) {
@@ -97,7 +97,8 @@ function getOtherLocations(gId) {
 	    var obj = data.rows[i];
 	    var icon = 'http://54.186.80.240/img/' + icons[1] + '.png';
 	    for (var j = 0; j < obj.length; j++) {
-	        markers.push(new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map}));
+            if (obj[j].uId != uId)
+	           markers.push(new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map}));
 	    }
 	}
     });
