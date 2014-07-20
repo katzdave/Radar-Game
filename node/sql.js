@@ -68,14 +68,72 @@ exports.getGroupTree = function(callback, gId) {
 
 //Returns root groups for a user
 exports.getRootGroups = function(callback, uId){
+	query = 'SELECT rId '
+		+ 'FROM Groups g '
+		+ 'INNER JOIN User_In_Group ug '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ?;';
+
+
+	model.execute(query, uId, function(err, rows){
+		if (err)
+		{
+			callback(err, rows);
+	    }
+	    else
+	    {
+	    	var result_table = {};
+            expandRootTable(callback, result_table, err, rows, 0);
+	    }
+	});
+}
+function expandRootTable(final_callback, table, errr, overall_rows, i) {
+      if ( i == overall_rows.length)
+      {
+     	 final_callback(errr, table);
+         return;
+      }
+
+      console.log(JSON.stringify(overall_rows));
+      getGroup(function(err, rows){
+      	      console.log(JSON.stringify(rows));
+      	  table[i] = rows[0];
+          expandRootTable(final_callback, table, err, overall_rows, i + 1);
+      }, overall_rows[i].rId);
+
+}
+
+// returns all memberships of the user
+exports.getSubgroupsFromUser = function(callback, uId, gId){
 	query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'INNER JOIN User_In_Group ug '
 		+ 'ON g.gId = ug.gId '
-		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
-	model.execute(query, uId, function(err, rows){
-		callback(err, rows);
+		+ 'WHERE ug.uId = ? AND g.rId = ?;';
+	model.execute(query,[uId, gId], function(err, rows){
+        if (err)
+        {
+			callback(err, rows);
+		}
+		else
+		{
+			expandSubgroupTable(callback, rows, err, rows[0].pId)
+		}
 	});
+}
+
+function expandSubgroupTable(final_callback, table, errr, gId) {
+	 if (gId == null) {
+         final_callback(errr, table.reverse());
+         return;
+	 }
+      console.log(JSON.stringify(table));
+      getGroup(function(err, rows){
+      	      console.log(JSON.stringify(rows));
+      	  table.push( rows[0]);
+          expandSubgroupTable(final_callback, table, err, rows[0].pId);
+      }, gId);
+
 }
 
 //Returns all groups for a user
