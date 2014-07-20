@@ -51,18 +51,23 @@ exports.getRootGroups = function(callback, uId){
 	});
 }
 
-//Returns tiered groups for a user
-//Inputs uId, gId of root
-exports.getTieredGroups = function(callback, uId, gId){
-	query = 'SELECT * '
-		+ 'FROM Groups g '
-		+ 'INNER JOIN User_In_Group ug '
-		+ 'ON g.gId = ug.gId '
-		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
-	model.execute(query, uId, function(err, rows){
-		callback(err, rows);
-	});
-}
+// //Returns tiered groups for a user
+// //Inputs uId, gId of root
+// exports.getTieredGroups = function(callback, uId, gId){
+// 	query = 'SELECT * '
+// 		+ 'FROM Groups g '
+// 		+ 'INNER JOIN User_In_Group ug '
+// 		+ 'ON g.gId = ug.gId '
+// 		+ 'WHERE ug.uId = ? AND g.gId = ?;';
+// 	grouplist = [];
+// 	while(1) {
+//     	model.execute(query, gId, function(err, rows){
+// 			if(rows == null)
+// 				break;
+// 		});
+// 	}
+// 	while (condition);
+// }
 
 /* This function returns JSON object that contains a tree of all the groups under group gId.
  *  If gId == null, this returns a JSON object of trees of all the groups. 
