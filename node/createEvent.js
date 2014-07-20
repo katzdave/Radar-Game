@@ -18,17 +18,24 @@ exports.createNewEvent = function(req, res){
         if(err){
             console.log(err);
         }
-        uid = rows[0];
+        uid = rows[0].uId;
     }
     if (uid == null){//need to add this user
-        sql.registerUser(function(err){}, fbid, req.user.facebook.name);
+        sql.registerUser(function(err){sql.getUserFromFbid(getUid, fbid);}, fbid, req.user.facebook.name);
+        function getUid(err, rows){
+            //take the rows and grab
+            if(err){
+            console.log(err);
+            }
+        uid = rows[0].uId;
+        }
     } else{
         sql.getGroupsFromUid(getGid, uid);
         function getGid(err, rows){
             if(err){
                 console.log(err);
             }
-            gid = rows[0];
+            gid = rows[0].gId;
         }
     }
     if(gid == null){
@@ -54,24 +61,32 @@ exports.joinEvent = function(req, res){
         if(err){
             console.log(err);
         }
-        uid = rows[0];
-    }
-    if (uid == null){//need to add this user
-        sql.registerUser(function(err){}, fbid, req.user.facebook.name);
-    } else{
-        sql.getGroupsFromUid(getGid, uid);
-        function getGid(err, rows){
-            if(err){
-                console.log(err);
+        uid = rows[0].uId;
+        if (uid == null){//need to add this user
+            sql.registerUser(function(err){sql.getUserFromFbid(getUid, fbid);}, fbid, req.user.facebook.name);
+            function getUid(err, rows){
+                //take the rows and grab
+                if(err){
+                    console.log(err);
+                }
+                uid = rows[0].uId;
+                console.log(uid);
+                if (uid == null){//this user needs a group
+                    //add user to some group?
+                    uid = 0;
+                }
+                console.log(uid + 'sup homie');
+                res.redirect('/geo/'+ uid);
             }
-            gid = rows[0];
+        } else{
+            if (uid == null){//this user needs a group
+                //add user to some group?
+                uid = 0;
+            }
+            console.log(uid + 'sup homie');
+            res.redirect('/geo/'+ uid);
         }
     }
-    if (gid == null){//this user needs a group
-        //add user to some group?
-        gid = 0;
-    }
-    res.redirect('/geo/'+ gid);
   }
 };
 
