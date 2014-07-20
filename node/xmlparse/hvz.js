@@ -52,4 +52,6 @@ function insertIntoDb(item, sql){
     sql.createRootGroup(expand, item.Name, item.isPublic, item.isVisible, 0, item.ImageUrl);
 }
 
-insertIntoDb(game, sqlExten);
+exports.doSomething = function(game) {
+    insertIntoDb(JSON.parse(game), sqlExten);
+}
