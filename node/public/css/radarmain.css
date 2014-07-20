@@ -15,11 +15,14 @@ img{
 .button{
     float:left;
     width:50%;
-    max-width: 320px;
+    max-width: 480px;
     color:#000;
     height:110px;
     text-align:center;
     font-family:sans-serif;
     font-size:400%;
     background:#dddddd;
+}
+a:link{
+    text-decoration:none;
 }
