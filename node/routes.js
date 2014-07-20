@@ -22,7 +22,7 @@ exports.game = function(req, res) {
     if (err || group.length == 0) {
       res.redirect('/');
     } else {
-      res.render('game.html', {user: 'Alpha', gId: group[0].gId, name: group[0].GroupName});
+      res.render('game.html', {user: 'Alpha', gId: group[0].gId, name: group[0].Groupname});
     }
   }, req.params.gId);
 };
@@ -45,5 +45,11 @@ exports.listsubgroups = function(req, res) {
   sql.getGroupTree(function(err, groups) {
     res.json({result: groups});
   }, req.body.gId);
+}
+
+exports.addusertogroup = function(req, res) {
+  sql.addUserToGroup(function(err) {
+    res.json({});
+  }, req.body.uId, req.body.gId);
 }
 
