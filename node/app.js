@@ -8,7 +8,7 @@ var passport = require('passport')
 passport.use(new FacebookStrategy({
     clientID: 1476041929304242,
     clientSecret: "56fee07fc45d24c2662538660693aef8",
-    callbackURL: "http://localhost:8080/create"
+    callbackURL: "http://next.sexy:8080/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     User.findOrCreate(profile, function(err, user) {
