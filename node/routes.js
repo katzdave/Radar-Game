@@ -6,7 +6,7 @@ exports.home = function(req, res) {
 };
 
 exports.geo = function(req, res) {
-  res.render('geo.html', {uId: '1' , user: req.user});
+  res.render('geo.html', {uId: '1' , user: JSON.stringify(req.session)});
 };
 
 exports.create = function(req, res) {
@@ -26,4 +26,11 @@ exports.getRootGroups = function(req, res) {
        response = {err: err,rows: rows};
        res.send(response);
    }, req.body.uId);
+};
+
+exports.getSubGroups = function(req, res) {
+   sql.getSubGroups(function(err,rows) {
+       response = {err: err,rows: rows};
+       res.send(response);
+   }, req.body.uId, req.body.gId);
 };

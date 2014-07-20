@@ -8,7 +8,7 @@ var passport = require('passport')
 passport.use(new FacebookStrategy({
     clientID: 1476041929304242,
     clientSecret: "56fee07fc45d24c2662538660693aef8",
-    callbackURL: "http://next.sexy:8080/auth/facebook/callback"
+    callbackURL: "http://localhost:8080/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
@@ -44,6 +44,7 @@ app.get('/', routes.home);
 app.get('/geo', routes.geo);
 app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
+app.post('/getSubGroups', routes.getSubGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
 app.get('/game', routes.game);

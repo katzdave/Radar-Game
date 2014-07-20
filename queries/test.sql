@@ -42,6 +42,9 @@ insert into Groups (Groupname, isPublic, isVisible, Level)
 insert into Groups (Groupname, isPublic, isVisible, Level)
 	values ('field trip planner', 1, 0, 0);
 
+insert into Groups (Groupname, isPublic, isVisible, Level)
+	values ('third group', 1, 0, 0);
+
 insert into Groups (pId, Groupname, isPublic, isVisible, Level)
 	values (1, 'humans', 0, 1, 1);
 

@@ -42,7 +42,7 @@ table {
 
 .button {
     display: block;
-    margin: 6 auto;
+    margin: 6px auto;
     border: 0;
     border-radius: 6px;
     font-size: 16px;
@@ -61,6 +61,16 @@ table {
 .blue:hover {
     background-color: #4099FF;
 }
+
+.selected {
+    background-color: #AE517E;
+    width: 50%;
+}
+
+.selected:hover {
+    background-color: #CE719E;
+}
+
 
 .cancel {
     background-color: #B90505;
@@ -119,6 +129,13 @@ table {
     float: left;
 }
 
+#usersgroup {
+    width: 25%;
+    float: left;
+    border: 1px solid;
+        border-color: #555555;
+}
+
 #userheader {
     color: #ffffff;
     background-color: #AE113E;
@@ -126,6 +143,7 @@ table {
     padding: 4px 4px 6px 6px;
     font-weight: 400;
 }
+
 
 #userlist {
     background-color: rgba(0,0,0,0.3);
