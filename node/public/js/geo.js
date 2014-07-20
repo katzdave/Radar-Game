@@ -95,7 +95,7 @@ function getOtherLocations(gId) {
     $.post('/getcoloredsubgroups', {gId: 1}, function(data) {
         for (var i = 0; i < data.rows.length; i++) {
 	    var obj = data.rows[i];
-	    var icon = 'http://54.186.80.240/img/' + icons[i % 3] + '.png';
+	    var icon = 'http://54.186.80.240/img/' + icons[1] + '.png';
 	    for (var j = 0; j < obj.length; j++) {
 	        markers.push(new google.maps.Marker({position: {lat: obj[j].Latitude, lng: obj[j].Longitude}, icon: icon, map: map}));
 	    }
