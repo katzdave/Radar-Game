@@ -33,8 +33,8 @@
              console.log(response.rows);
              err = response.err;
              rows = response.rows;
-             var gamediv = document.getElementById("usersulgame");
-             if (err != 'null')
+             var gamediv = document.getElementById("gameslistul");
+             if (err == null)
              {
                  
                 gamediv.innerHTML = "";
@@ -44,7 +44,7 @@
                 	gamestr += ' onclick="selectGame(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
                     gamediv.innerHTML += gamestr;
 
-            	}
+            	 }
              }
              else
              {
@@ -59,19 +59,20 @@
       	      document.getElementById("game" + activeGame).className = "blue button geobutton";
 
 
-      	document.getElementById("usersulgroup").innerHTML = "";
+      	document.getElementById("groupslistul").innerHTML = "";
   		document.getElementById("game" + gId).className = "selected button geobutton";
   		activeGame = gId;
 
-
+      activeGroup = false;
       	
        $.post('/getSubGroups',{uId:uId, gId:activeGame},function(response) {
              console.log(response.err);
              console.log(response.rows);
              err = response.err;
              rows = response.rows;
-             var groupdiv = document.getElementById("usersulgroup");
-             if (err != 'null')
+
+             var groupdiv = document.getElementById("groupslistul");
+             if (err == null)
              {
                  
                 groupdiv.innerHTML = "";
@@ -151,7 +152,11 @@
         <div id="groupslink">Groups</div>
     </div>
     <div id="content">
-        <div id="groupslist">
+        <div id="gameslist">
+            <ul id="gameslistul">
+            </ul>
+        </div>
+          <div id="groupslist">
             <ul id="groupslistul">
             </ul>
         </div>

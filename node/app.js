@@ -74,7 +74,7 @@ app.post('/getRootGroups', routes.getRootGroups);
 app.get('/game', routes.game);
 app.get('/game/:gId', routes.game);
 app.get('/geo', routes.geo);
-app.get('/geo/:gId', routes.geo);
+app.get('/geo/:uId', routes.geo);
 
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);
