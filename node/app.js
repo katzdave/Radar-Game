@@ -16,7 +16,7 @@ passport.deserializeUser(function(obj, done){
 passport.use(new FacebookStrategy({
     clientID: 1476041929304242,
     clientSecret: "56fee07fc45d24c2662538660693aef8",
-    callbackURL: "http://next.sexy:8080/auth/facebook/callback"
+    callbackURL: "http://localhost:8080/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     process.nextTick(function(){
@@ -52,12 +52,14 @@ app.get('/', routes.home);
 app.get('/geo', routes.geo);
 app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
+app.post('/getSubGroups', routes.getSubGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/create' }));
 app.get('/game/:gId', routes.game);
 
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);
+app.post('/addusertogroup', routes.addusertogroup);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
