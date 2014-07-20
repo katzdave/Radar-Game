@@ -3,8 +3,8 @@ var sql = require('./sql');
 
 exports.createNewEvent = function(req, res){
   console.log(req.user);
-  if(!req.user){
-    res.render('facebook.html');
+  if(req.user == null){
+    res.redirect('/auth/facebook');
   }
   //should have a session and profile object.
   else{
@@ -32,15 +32,15 @@ exports.createNewEvent = function(req, res){
         }
     }
     if(gid == null){
-        gid = '';
+        gid = 1;
     }
     res.redirect('/game/'+ gid);
   }
 };
 exports.joinEvent = function(req, res){
   console.log(req.user);
-  if(!req.user){
-    res.render('facebook.html');
+  if(req.user == null){
+    res.redirect('/auth/facebook');
   }
   //should have a session and profile object.
   else{
@@ -69,7 +69,7 @@ exports.joinEvent = function(req, res){
     }
     if (gid == null){//this user needs a group
         //add user to some group?
-        gid = '';
+        gid = 0;
     }
     res.redirect('/geo/'+ gid);
   }

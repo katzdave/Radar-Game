@@ -7,17 +7,17 @@ exports.home = function(req, res) {
 };
 
 exports.geo = function(req, res) {
-  if(req.params.gId != ''){
-    sql.getGroup(function(err, group) {
-      if (err || group.length == 0) {
-       res.redirect('/');
-      } else {
-        res.render('geo.html', {user: 'Alpha', gId: group[0].gId, name: group[0].Groupname});
-      }
-    }, req.params.gId);
-  } else{
-    res.render('geo.html');
-  }
+  //if(req.params.gId != ''){
+  //  sql.getGroup(function(err, group) {
+  //    if (err || group.length == 0) {
+  //     res.redirect('/');
+  //    } else {
+  //      res.render('geo.html', {user: 'Alpha', gId: group[0].gId, name: group[0].Groupname});
+  //    }
+  //  }, req.params.gId);
+  //} else{
+    res.render('geo.html', {uId: req.params.uId , user: JSON.stringify(req.user)});
+  //}
 };
 
 exports.create = function(req, res) {
