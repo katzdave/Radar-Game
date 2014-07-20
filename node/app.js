@@ -5,6 +5,14 @@ var routes = require('./routes');
 var passport = require('passport')
   , FacebookStrategy = require('passport-facebook').Strategy;
 
+passport.serializeUser(function(user, done){
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done){
+    done(null, obj);
+});
+
 passport.use(new FacebookStrategy({
     clientID: 1476041929304242,
     clientSecret: "56fee07fc45d24c2662538660693aef8",
@@ -46,8 +54,11 @@ app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
 app.post('/getSubGroups', routes.getSubGroups);
 app.get('/auth/facebook', passport.authenticate('facebook'));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/login' }));
-app.get('/game', routes.game);
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/create', failureRedirect: '/create' }));
+app.get('/game/:gId', routes.game);
+
+app.post('/listgroupusers', routes.listgroupusers);
+app.post('/listsubgroups', routes.listsubgroups);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

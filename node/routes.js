@@ -18,8 +18,15 @@ exports.facebook = function(req, res) {
 };
 
 exports.game = function(req, res) {
-  res.render('game.html');
+  sql.getGroup(function(err, group) {
+    if (err || group.length == 0) {
+      res.redirect('/');
+    } else {
+      res.render('game.html', {user: 'Alpha', gId: group[0].gId, name: group[0].GroupName});
+    }
+  }, req.params.gId);
 };
+
 
 exports.getRootGroups = function(req, res) {
    sql.getRootGroups(function(err,rows) {
@@ -34,3 +41,16 @@ exports.getSubGroups = function(req, res) {
        res.send(response);
    }, req.body.uId, req.body.gId);
 };
+
+exports.listgroupusers = function(req, res) {
+  sql.getUsersFromGroup(function(err, users) {
+    res.json({result: users});
+  }, req.body.gId);
+}
+
+exports.listsubgroups = function(req, res) {
+  sql.getGroupTree(function(err, groups) {
+    res.json({result: groups});
+  }, req.body.gId);
+}
+
