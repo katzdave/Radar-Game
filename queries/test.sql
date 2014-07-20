@@ -29,7 +29,7 @@ insert into Users (Username, fbId)
 	values ('Captain Obvious', '4523423423423423');
 
 insert into Users (Username, fbId)
-	values ('Captain Hook', '39940394093094');
+	values ('Captain Hook', '3994039434');
 
 create table Groups
 (
