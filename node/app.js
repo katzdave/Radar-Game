@@ -72,7 +72,6 @@ app.get('/join', routes.join);
 app.get('/create', routes.create);
 app.post('/getRootGroups', routes.getRootGroups);
 app.get('/game', routes.game);
-app.post('/getSubGroups', routes.getSubGroups);
 app.get('/game/:gId', routes.game);
 app.get('/geo', routes.geo);
 app.get('/geo/:gId', routes.geo);
@@ -80,6 +79,9 @@ app.get('/geo/:gId', routes.geo);
 app.post('/listgroupusers', routes.listgroupusers);
 app.post('/listsubgroups', routes.listsubgroups);
 app.post('/addusertogroup', routes.addusertogroup);
+app.post('/getsubgroups', routes.getSubGroups);
+app.post('/setposition', routes.setPosition);
+app.post('/getcoloredsubgroups', routes.getcoloredusersinsubgroups);
 
 http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));

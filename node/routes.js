@@ -75,3 +75,15 @@ exports.addusertogroup = function(req, res) {
   }, req.body.uId, req.body.gId, 0);
 }
 
+exports.setPosition = function(req, res) {
+  sql.setPosition(function(err) {
+    res.json({});
+  }, req.body.uId, req.body.lat, req.body.lng, 1);
+}
+
+exports.getcoloredusersinsubgroups = function(req, res) {
+  sql.getColoredUsersInSubgroups(function(err, obj) {
+    res.json({rows: obj});
+  }, req.body.gId);
+}
+

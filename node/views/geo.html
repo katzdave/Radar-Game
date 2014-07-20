@@ -3,242 +3,30 @@
 <head>
   <title>Radar</title>
   <meta name="description" content="Group gaming tracking system">
-      <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-
-            <link rel='stylesheet' href='/css/game.css' />
-   <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 80% }
-      
-    </style>
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAUeCEPWBuJBrgOC2tgbTCfeONThql9f5Q"></script>
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	    <script type="text/javascript">
-	    var map;
-	    var markers;
-	    var own_marker;
-	    var uId = '<%= uId %>';
-	    var err;
-	    var rows;
-	    var activeGame = false;
-	    var activeGroup = false;
-        $.post('/getRootGroups',{uId:uId},function(response) {
-             console.log(response.err);
-             console.log(response.rows);
-             err = response.err;
-             rows = response.rows;
-             var gamediv = document.getElementById("usersulgame");
-             if (err != 'null')
-             {
-                 
-                gamediv.innerHTML = "";
-                var i = 0;
-                for(var row in rows){
-                	var gamestr = '<div id="game' + rows[row].gId + '" class="blue button geobutton"';
-                	gamestr += ' onclick="selectGame(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
-                    gamediv.innerHTML += gamestr;
-
-            	}
-             }
-             else
-             {
-                gamediv.innerHTML = JSON.stringify(err);
-             }
-        });
-      function selectGame(gId)
-      {
-      	if (activeGame == gId)
-      		return;
-      	if (activeGame != false && document.getElementById("game" + activeGame))
-      	      document.getElementById("game" + activeGame).className = "blue button geobutton";
-
-
-      	document.getElementById("usersulgroup").innerHTML = "";
-  		document.getElementById("game" + gId).className = "selected button geobutton";
-  		activeGame = gId;
-
-
-      	
-       $.post('/getSubGroups',{uId:uId, gId:activeGame},function(response) {
-             console.log(response.err);
-             console.log(response.rows);
-             err = response.err;
-             rows = response.rows;
-             var groupdiv = document.getElementById("usersulgroup");
-             if (err != 'null')
-             {
-                 
-                groupdiv.innerHTML = "";
-                var i = 0;
-                for(var row in rows){
-                	// add if disabled/root, don't allow click.
-                	var groupstr = '<div id="group' + rows[row].gId + '" class="blue button geobutton"';
-                	if (rows[row].isVisible == '0')
-                		groupstr += '>' + rows[row].Groupname + '</div>';
-                	else
-                		groupstr += ' onclick="selectGroup(' + rows[row].gId + ')">' + rows[row].Groupname + '</div>';
-                    groupdiv.innerHTML += groupstr;
-            	}
-             }
-             else
-             {
-                gamediv.innerHTML = JSON.stringify(err);
-             }
-        });
-      }
-
-      function selectGroup(gId)
-      {
-      	if (activeGroup == gId)
-      		return;
-      	if (activeGroup != false)
-      	{
-      	    if (document.getElementById("group" + activeGroup))
-      			document.getElementById("group" + activeGroup).className = "blue button geobutton";
-      		else
-      			// in case the user tries to delete the button really quickly
-      			activeGroup = false;
-      	}
-      	document.getElementById("group" + gId).className = "selected button geobutton";
-      	activeGroup = gId;
-
-      }
-
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(-34.397, 150.644),
-          zoom: 8
-        };
-        map = new google.maps.Map(document.getElementById("map-canvas"),{
-            zoom: 19,
-            center: new google.maps.LatLng(-34.397, 150.644),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            mapTypeControl: false,
-            streetViewControl: false,
-            panControl: false,
-            rotateControl: true,
-            zoomControlOptions: {
-               position: google.maps.ControlPosition.LEFT_BOTTOM
-            }});
-        new google.maps.Marker({position: {lat: 37.786, lng: -122.4052}, icon: "http://54.186.80.240/img/red-dot.png", map: map}); 
-        own_marker = new google.maps.Marker({position: {lat: 37.7861, lng: -122.5052}, icon: "http://54.186.80.240/img/green-dot.png", map: map});
-        
-
-        /*for (marker_key in markers)
-        {
-        	markers[marker_key] = 
-        } */
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-
-
-    </script>
-
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <link rel='stylesheet' href='/css/game.css' />
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAUeCEPWBuJBrgOC2tgbTCfeONThql9f5Q"></script>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="/js/geo.js"></script>
+  <script>uId = '<%= uId %>';</script>
 </head>
-<body >
-            <div id="usersgroup">
-                <div id="userheader">Games</div>
-                <div id="userlist">
-                    
-                    <ul id="usersulgame">
-                        <!--<div id="usercreate" class="blue button geobutton">Game 1</div>
-                        <div id="usercreate" class="blue button geobutton">Game 2</div>-->
-                    </ul>
+<body>
+    <div id="header">
+        <div id="namelink">Games</div>
+        <div id="groupslink">Groups</div>
+    </div>
+    <div id="content">
+        <div id="groupslist">
+            <ul id="groupslistul">
+            </ul>
+        </div>
+        <div id="warning"></div>
+    </div>
 
-
-                    <div id="userlistbuffer"></div>
-                </div>
-            </div>
-
-            <div id="usersgroup">
-                <div id="userheader">Groups</div>
-                <div id="userlist">
-                    
-                    <ul id="usersulgroup">
-                        <!--<div id="usercreate" class="blue button geobutton">Game 1</div>
-                        <div id="usercreate" class="blue button geobutton">Game 2</div>-->
-                    </ul>
-
-
-                    <div id="userlistbuffer"></div>
-                </div>
-            </div>
-  <p>Hello, dfkj <%= uId %>! <%= user %></p>
-
-  <p id="demo">i don't think this works, bro</p>
-
-
-
-   <div id="map-canvas" style="width: 85%; height: 80%"></div>
-
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-
-
-  <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
+    <div id="map-canvas" style="width: 85%; height: 80%"></div>
+    <!-- grab the GPS coordinates, if possible - from http://www.w3schools.com/HTML/html5_geolocation.asp -->
 <script type = "text/javascript">
-var x = document.getElementById("demo");
-var id;
-var options = {
-  enableHighAccuracy: true,
-  timeout: 10000,
-  maximumAge: 0
-};
-
-getLocation();
-
-function getLocation() {
-    if (navigator.geolocation) {
-
-        id = navigator.geolocation.watchPosition(showPosition, showError, options);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-function showPosition(position) {
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude; 
-    if (position.coords.heading != null)
-    {
-    	x.innerHTML += "<br>Heading: " + position.coords.heading;
-    }
-    else
-    {
-    	x.innerHTML += "<br>No heading.";
-    }
-
-    x.innerHTML = JSON.stringify(position.coords) + "<br> uId = " + uId + "<br> err = " + JSON.stringify(err) + "<br> rows = " + JSON.stringify(rows);
- 
-    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-    own_marker.setPosition(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-}
-
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
-            break;
-        case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
-            break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
-            break;
-        default:
-            x.innerHTML = "default."
-            break;
-    }
-}
 </script>
-
 
 </body>
 </html>
