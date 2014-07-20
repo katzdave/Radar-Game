@@ -15,7 +15,7 @@
    id="svg2995"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 3">
+   sodipodi:docname="radarlogo.svg">
   <defs
      id="defs2997">
     <linearGradient
@@ -43,8 +43,8 @@
      inkscape:snap-global="false"
      inkscape:window-width="1355"
      inkscape:window-height="816"
-     inkscape:window-x="109"
-     inkscape:window-y="90"
+     inkscape:window-x="306"
+     inkscape:window-y="131"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata3000">
@@ -64,7 +64,7 @@
      inkscape:groupmode="layer">
     <text
        xml:space="preserve"
-       style="font-size:165.79203796px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff7b00;fill-opacity:1;stroke:none;font-family:FreeSans;-inkscape-font-specification:FreeSans"
+       style="font-size:165.79203795999998761px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff7b00;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        x="31.541897"
        y="184.92122"
        id="text3003"
@@ -87,7 +87,7 @@
          id="flowPara3013"></flowPara></flowRoot>    <rect
        style="fill:#ff7b00;fill-opacity:1"
        id="rect3807"
-       width="551.16754"
+       width="556.33069"
        height="152.31206"
        x="44.416229"
        y="188.28369" />
@@ -103,7 +103,7 @@
        sodipodi:start="0"
        sodipodi:end="3.1415927"
        sodipodi:open="true"
-       transform="matrix(0.91025641,0,0,0.99789335,-65.380613,-173.22341)" />
+       transform="matrix(0.91880342,0,0,1.0064404,-66.41765,-176.32203)" />
     <path
        sodipodi:type="arc"
        style="fill:#ff7b00;fill-opacity:1;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none"
