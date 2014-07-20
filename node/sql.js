@@ -1,14 +1,11 @@
 var model = require('./model');
 
-/* Get functions */
-
-
-exports.getRules = function(callback){
-	query = 'select * from Rules'
-	model.execute(query, [], function(err, rows){
-		callback(rows);
-	});
-}
+// exports.getRules = function(callback){
+// 	query = 'select * from Rules'
+// 	model.execute(query, [], function(err, rows){
+// 		callback(rows);
+// 	});
+// }
 
 // Returns complete user metadata
 exports.getUsersFromGroup = function(callback, gId){
@@ -23,11 +20,46 @@ exports.getUsersFromGroup = function(callback, gId){
 }
 
 // Returns complete group metadata
+exports.getGroup = function(callback, gId){
+		query = 'SELECT * '
+		+ 'FROM Groups g '
+		+ 'WHERE g.gId = ?';
+	model.execute(query, gId, function(err, rows){
+		callback(err, rows);
+	});
+}
+
+// Returns collection complete group metadata
 exports.getSubgroupsFromGroup = function(callback, gId){
-	query = 'SELECT g.gId, g.pId, g.Groupname, g.Description, g.Password, g.isPublic '
+	query = 'SELECT * '
 		+ 'FROM Groups g '
 		+ 'WHERE g.pId = ?';
 	model.execute(query, gId, function(err, rows){
+		callback(err, rows);
+	});
+}
+
+//Returns root groups for a user
+exports.getRootGroups = function(callback, uId){
+	query = 'SELECT * '
+		+ 'FROM Groups g '
+		+ 'INNER JOIN User_In_Group ug '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
+	model.execute(query, uId, function(err, rows){
+		callback(err, rows);
+	});
+}
+
+//Returns tiered groups for a user
+//Inputs uId, gId of root
+exports.getTieredGroups = function(callback, uId, gId){
+	query = 'SELECT * '
+		+ 'FROM Groups g '
+		+ 'INNER JOIN User_In_Group ug '
+		+ 'ON g.gId = ug.gId '
+		+ 'WHERE ug.uId = ? AND ISNULL(g.pId);';
+	model.execute(query, uId, function(err, rows){
 		callback(err, rows);
 	});
 }
@@ -61,11 +93,15 @@ exports.registerUser = function(callback, fbId, username){
 	});
 }
 
-/* Set functions */
-
-/* This function updates the lattitude and longitude coordinates of the user with user ID uId. */
+/* This function updates the lattitude and longitude coordinates of the user with user ID uId.
+ * Will fail if the user id is not present
 /* Callback format: callback(err); */
 exports.setPosition = function(callback, uId, lat, lng, acc){
-
+	query = 'UPDATE Users '
+		+ 'SET Latitude = ?, Longitude = ?, Accuracy = ?, LastUpdate = NOW() '
+		+ 'WHERE uId = ?';
+	model.execute(query,[lat, lng, acc, uId], function(err, rows){
+		callback(err);
+	});
 }
 
